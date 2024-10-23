@@ -5,8 +5,11 @@ import React, { useEffect, useRef, useState } from "react";
 function App() {
   const [mapSize, setMapSize] = useState(16);
   const [speed, setSpeed] = useState(200);
-  const [snake, setSnake] = useState([{ x: mapSize/2, y: mapSize/2 }]);
-  const [food, setFood] = useState({ x: parseInt(Math.random() * mapSize), y: parseInt(Math.random() * mapSize) });
+  const [snake, setSnake] = useState([{ x: mapSize / 2, y: mapSize / 2 }]);
+  const [food, setFood] = useState({
+    x: parseInt(Math.random() * mapSize),
+    y: parseInt(Math.random() * mapSize),
+  });
   const [direction, setDirection] = useState("RIGHT");
   const [gameOver, setGameOver] = useState(false);
   const restartButtonRef = useRef(null);
@@ -89,10 +92,10 @@ function App() {
     const interval = setInterval(moveSnake, speed);
     return () => clearInterval(interval);
   }, [snake, direction, food, gameOver]);
-    
+
   useEffect(() => {
     if (gameOver && restartButtonRef.current) {
-        restartButtonRef.current.focus();
+      restartButtonRef.current.focus();
     }
   }, [gameOver]);
     const handleMapSizeChange = (event) => {

@@ -10,7 +10,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <GlobalContextProvider>
-      <App />
+      <div className="top-level">
+        <App />
+      </div>
     </GlobalContextProvider>
   </React.StrictMode>
 );
