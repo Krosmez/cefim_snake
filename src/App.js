@@ -1,9 +1,9 @@
 import "./App.css";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 function App() {
-  const [mapSize, setMapSize] = useState(20);
+  const [mapSize, setMapSize] = useState(16);
   const [speed, setSpeed] = useState(200);
   const [snake, setSnake] = useState([{ x: mapSize/2, y: mapSize/2 }]);
   const [food, setFood] = useState({ x: parseInt(Math.random() * mapSize), y: parseInt(Math.random() * mapSize) });
@@ -64,8 +64,8 @@ function App() {
       newSnake.unshift(head);
       if (head.x === food.x && head.y === food.y) {
         setFood({
-          x: Math.floor(Math.random() * 20),
-          y: Math.floor(Math.random() * 20),
+          x: Math.floor(Math.random() * mapSize),
+          y: Math.floor(Math.random() * mapSize),
         });
       } else {
         newSnake.pop();
@@ -73,9 +73,9 @@ function App() {
 
       if (
         head.x < 0 ||
-        head.x >= 20 ||
+        head.x >= mapSize ||
         head.y < 0 ||
-        head.y >= 20 ||
+        head.y >= mapSize ||
         newSnake
           .slice(1)
           .some((segment) => segment.x === head.x && segment.y === head.y)
@@ -94,25 +94,40 @@ function App() {
     if (gameOver && restartButtonRef.current) {
         restartButtonRef.current.focus();
     }
-}, [gameOver]);
+  }, [gameOver]);
+    const handleMapSizeChange = (event) => {
+    if (mapSize === parseInt(event.target.value)) return;
+    setMapSize(parseInt(event.target.value));
+    setSnake([{ x: parseInt(event.target.value) / 2, y: parseInt(event.target.value) / 2 }]);
+    setFood({ x: parseInt(Math.random() * event.target.value), y: parseInt(Math.random() * event.target.value) });
+};
 
-  return (
-    <div className="game-board">
-          { gameOver ? (
+    return (
+        <>
+        <div>
+            <label htmlFor="mapSize">Map Size: </label>
+            <select id="mapSize" onChange={handleMapSizeChange} disabled={!gameOver}>
+                <option value={16}>16</option>
+                <option value={24}>24</option>
+                <option value={32}>32</option>
+            </select>
+        </div>
+        { gameOver &&
             <>
-              <p className="game-over">Game Over</p>
-              <button className="restart" onClick={ () => {
-                setGameOver(false);
-                setDirection("RIGHT");
-                setSnake([{ x: mapSize / 2, y: mapSize / 2 }]);
-                setFood({ x: parseInt(Math.random() * mapSize), y: parseInt(Math.random() * mapSize) });
+                <p className="game-over">Game Over</p>
+                <button className="restart" onClick={ () => {
+                    setGameOver(false);
+                    setDirection("RIGHT");
+                    setSnake([{ x: mapSize / 2, y: mapSize / 2 }]);
+                    setFood({ x: parseInt(Math.random() * mapSize), y: parseInt(Math.random() * mapSize) });
                 } }
-                ref={restartButtonRef}
-                  >Restart</button>
+                    ref={ restartButtonRef }
+                >Restart</button>
             </>
-      ) : (
-        Array.from({ length: 20 }).map((_, row) =>
-          Array.from({ length: 20 }).map((_, col) => (
+        }
+      <div className="game-board" style={{gridTemplateColumns: `repeat(${mapSize}, 20px)`, gridTemplateRows: `repeat(${mapSize}, 20px)`}}>
+        {Array.from({ length: mapSize }).map((_, row) =>
+          Array.from({ length: mapSize }).map((_, col) => (
             <div
               key={`${row}-${col}`}
               className={`cell ${
@@ -125,8 +140,9 @@ function App() {
             />
           ))
         )
-      )}
+      }
     </div>
+    </>
   );
 }
 
