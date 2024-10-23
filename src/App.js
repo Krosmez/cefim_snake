@@ -2,7 +2,10 @@ import "./App.css";
 
 import React, { useEffect, useRef, useState } from "react";
 
-function App() {
+import Container from "./components/Container";
+import Header from "./components/Header";
+
+function App({}) {
   const [mapSize, setMapSize] = useState(16);
   const [snakeSpeed, setSnakeSpeed] = useState(100);
   const [snake, setSnake] = useState([{ x: mapSize / 2, y: mapSize / 2 }]);
@@ -27,16 +30,16 @@ function App() {
     const handleKeyDown = (e) => {
       switch (e.key) {
         case "ArrowUp":
-          if (direction !== 'DOWN') setDirection("UP");
+          if (direction !== "DOWN") setDirection("UP");
           break;
         case "ArrowDown":
-            if (direction !== 'UP') setDirection("DOWN");
+          if (direction !== "UP") setDirection("DOWN");
           break;
         case "ArrowLeft":
-            if (direction !== 'RIGHT') setDirection("LEFT");
+          if (direction !== "RIGHT") setDirection("LEFT");
           break;
         case "ArrowRight":
-            if (direction !== 'LEFT') setDirection("RIGHT");
+          if (direction !== "LEFT") setDirection("RIGHT");
           break;
         default:
           break;
@@ -108,98 +111,98 @@ function App() {
    */
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    const newScoreBoard = [...scoreBoard, {  name,  score }];
-    
+
+    const newScoreBoard = [...scoreBoard, { name, score }];
+
     // newScoreBoard.sort((a, b) => b.score - a.score);
     // newScoreBoard.pop();
     setScoreBoard(newScoreBoard);
     setScore(0);
-    
-  }
+  };
+
   useEffect(() => {
     if (gameOver && restartButtonRef.current) {
       restartButtonRef.current.focus();
     }
   }, [gameOver]);
-    const handleMapSizeChange = (event) => {
-        if (mapSize === event.target.value) return;
-        setMapSize(event.target.value);
-        setSnake([{ x: parseInt(event.target.value) / 2, y: parseInt(event.target.value) / 2 }]);
-        setFood({ x: parseInt(Math.random() * event.target.value), y: parseInt(Math.random() * event.target.value) });
-    };
-    
-    const handleSnakeSpeedChange = (event) => {
-        if (snakeSpeed === event.target.value) return;
-        setSnakeSpeed(event.target.value);
-    }
+
   /**
    * Local Storage for Score Board
    */
   useEffect(() => {
     localStorage.setItem("scoreBoard", JSON.stringify(scoreBoard));
-    console.log(scoreBoard);
-
   }, [scoreBoard]);
 
   function handleChange(e) {
-    // console.log(e.target.value);
-    
-    setName( e.target.value );
+    setName(e.target.value);
   }
-    return (
-        <div>
-        { gameOver &&
-            <>
-                <p className="game-over">Game Over</p>
-                <button className="restart" onClick={ () => {
-                    setGameOver(false);
-                    setDirection("RIGHT");
-                    setSnake([{ x: mapSize / 2, y: mapSize / 2 }]);
-                    setFood({ x: parseInt(Math.random() * mapSize), y: parseInt(Math.random() * mapSize) });
-                } }
-                    ref={ restartButtonRef }
-                >Restart</button>
-                <form onSubmit={handleSubmit} >
-                  <input type="text" value={name} label="input your name: " name="name" onChange={handleChange} />
-                </form>
-            </>
-        }
-        <div>
-            <label htmlFor="mapSize">Map Size: </label>
-            <select id="mapSize" onChange={handleMapSizeChange} disabled={!gameOver}>
-                <option value={16}>Small</option>
-                <option value={24}>Normal</option>
-                <option value={32}>Huge</option>
-            </select>
-            <label htmlFor="mapSize">Snake Speed: </label>
-            <select id="snakeSpeed" onChange={handleSnakeSpeedChange} disabled={!gameOver}>
-                <option value={500}>Slow</option>
-                <option value={250}>Normal</option>
-                <option value={100}>Fast</option>
-            </select>
-        </div>
-        <div className="game-info">
-          <div>Score: {score}</div>
-      </div>
-      <div className="game-board" style={{gridTemplateColumns: `repeat(${mapSize}, 20px)`, gridTemplateRows: `repeat(${mapSize}, 20px)`}}>
-        {Array.from({ length: mapSize }).map((_, row) =>
-          Array.from({ length: mapSize }).map((_, col) => (
-            <div
-              key={`${row}-${col}`}
-              className={`cell ${
-                snake.some((segment) => segment.x === col && segment.y === row)
-                  ? "snake"
-                  : food.x === col && food.y === row
-                  ? "food"
-                  : ""
-              }`}
+
+  return (
+    <>
+      {gameOver && (
+        <>
+          <p className="game-over">Game Over</p>
+          <button
+            className="restart"
+            onClick={() => {
+              setGameOver(false);
+              setDirection("RIGHT");
+              setSnake([{ x: mapSize / 2, y: mapSize / 2 }]);
+              setFood({
+                x: parseInt(Math.random() * mapSize),
+                y: parseInt(Math.random() * mapSize),
+              });
+            }}
+            ref={restartButtonRef}
+          >
+            Restart
+          </button>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              value={name}
+              label="input your name: "
+              name="name"
+              onChange={handleChange}
             />
-          ))
-        )
-      }
-    </div>
-    </div>
+          </form>
+        </>
+      )}
+      <Header
+        score={score}
+        gameOver={gameOver}
+        mapSize={mapSize}
+        snakeSpeed={snakeSpeed}
+        onMapChange={(e) => setMapSize(e)}
+        onSpeedChange={(e) => setSnakeSpeed(e)}
+      />
+      <Container>
+        <div
+          className="game-board"
+          style={{
+            gridTemplateColumns: `repeat(${mapSize}, 20px)`,
+            gridTemplateRows: `repeat(${mapSize}, 20px)`,
+          }}
+        >
+          {Array.from({ length: mapSize }).map((_, row) =>
+            Array.from({ length: mapSize }).map((_, col) => (
+              <div
+                key={`${row}-${col}`}
+                className={`cell ${
+                  snake.some(
+                    (segment) => segment.x === col && segment.y === row
+                  )
+                    ? "snake"
+                    : food.x === col && food.y === row
+                    ? "food"
+                    : ""
+                }`}
+              />
+            ))
+          )}
+        </div>
+      </Container>
+    </>
   );
 }
 

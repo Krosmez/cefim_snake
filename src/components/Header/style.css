@@ -1,0 +1,18 @@
+.header {
+    background-color: var(--ternary-color);
+}
+
+.header h1 {}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.optionContainer {
+    display: flex;
+    align-items: center;
+}
+
+.game-info {}
