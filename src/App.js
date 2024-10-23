@@ -6,7 +6,7 @@ function App() {
   const [mapSize, setMapSize] = useState(20);
   const [speed, setSpeed] = useState(200);
   const [snake, setSnake] = useState([{ x: mapSize/2, y: mapSize/2 }]);
-  const [food, setFood] = useState({ x: Math.random() * mapSize, y: Math.random() * mapSize });
+  const [food, setFood] = useState({ x: parseInt(Math.random() * mapSize), y: parseInt(Math.random() * mapSize) });
   const [direction, setDirection] = useState("RIGHT");
   const [gameOver, setGameOver] = useState(false);
 
