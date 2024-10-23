@@ -12,6 +12,15 @@ function App() {
   });
   const [direction, setDirection] = useState("RIGHT");
   const [gameOver, setGameOver] = useState(false);
+  const [scoreBoard, setScoreBoard] = useState([
+    { name: "Player 1", score: 10 },
+    { name: "Player 2", score: 20 },
+    { name: "Player 3", score: 30 },
+    { name: "Player 4", score: 40 },
+    { name: "Player 5", score: 50 },
+  ]);
+  const [score, setScore] = useState(0);
+  const [name, setName] = useState("");
   const restartButtonRef = useRef(null);
 
   useEffect(() => {
@@ -70,6 +79,7 @@ function App() {
           x: Math.floor(Math.random() * mapSize),
           y: Math.floor(Math.random() * mapSize),
         });
+        setScore(score + 1);
       } else {
         newSnake.pop();
       }
@@ -93,6 +103,20 @@ function App() {
     return () => clearInterval(interval);
   }, [snake, direction, food, gameOver]);
 
+  /**
+   * Save new score in scoreBoard
+   */
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    const newScoreBoard = [...scoreBoard, {  name,  score }];
+    
+    // newScoreBoard.sort((a, b) => b.score - a.score);
+    // newScoreBoard.pop();
+    setScoreBoard(newScoreBoard);
+    setScore(0);
+    
+  }
   useEffect(() => {
     if (gameOver && restartButtonRef.current) {
       restartButtonRef.current.focus();
@@ -109,7 +133,20 @@ function App() {
         if (speed === parseInt(event.target.value)) return;
         setSpeed(parseInt(event.target.value));
     }
+  /**
+   * Local Storage for Score Board
+   */
+  useEffect(() => {
+    localStorage.setItem("scoreBoard", JSON.stringify(scoreBoard));
+    console.log(scoreBoard);
 
+  }, [scoreBoard]);
+
+  function handleChange(e) {
+    // console.log(e.target.value);
+    
+    setName( e.target.value );
+  }
     return (
         <>
         { gameOver &&
@@ -123,6 +160,9 @@ function App() {
                 } }
                     ref={ restartButtonRef }
                 >Restart</button>
+                <form  onSubmit={handleSubmit} >
+                  <input type="text" value={name} label="input your name: " name="name" onChange={handleChange} />
+                </form>
             </>
         }
         <div>
@@ -139,6 +179,9 @@ function App() {
                 <option value={100}>Fast</option>
             </select>
         </div>
+        <div className="game-info">
+          <div>Score: {score}</div>
+      </div>
       <div className="game-board" style={{gridTemplateColumns: `repeat(${mapSize}, 20px)`, gridTemplateRows: `repeat(${mapSize}, 20px)`}}>
         {Array.from({ length: mapSize }).map((_, row) =>
           Array.from({ length: mapSize }).map((_, col) => (
