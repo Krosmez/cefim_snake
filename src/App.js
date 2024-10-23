@@ -1,10 +1,10 @@
 import "./App.css";
-import { useGlobalContext } from "./context/GlobalContext";
-import React, { useEffect, useRef, useState } from "react";
 
+import React, { useEffect, useRef, useState } from "react";
 
 import Container from "./components/Container";
 import Header from "./components/Header";
+import { useGlobalContext } from "./context/GlobalContext";
 
 function App({}) {
   const { state, dispatch } = useGlobalContext();
@@ -21,22 +21,20 @@ function App({}) {
   const [name, setName] = useState("");
   const restartButtonRef = useRef(null);
 
- 
-
   useEffect(() => {
     const handleKeyDown = (e) => {
       switch (e.key) {
         case "ArrowUp":
-          if (direction !== "DOWN") setDirection("UP");
+          setDirection("UP");
           break;
         case "ArrowDown":
-          if (direction !== "UP") setDirection("DOWN");
+          setDirection("DOWN");
           break;
         case "ArrowLeft":
-          if (direction !== "RIGHT") setDirection("LEFT");
+          setDirection("LEFT");
           break;
         case "ArrowRight":
-          if (direction !== "LEFT") setDirection("RIGHT");
+          setDirection("RIGHT");
           break;
         default:
           break;
@@ -112,8 +110,8 @@ function App({}) {
    */
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newScoreBoard = [...state.scoreBoard, {  name,  score }];
-    
+    const newScoreBoard = [...state.scoreBoard, { name, score }];
+
     newScoreBoard.sort((a, b) => b.score - a.score);
     newScoreBoard.pop();
     dispatch({ type: "UPDATE_SCOREBOARD", payload: newScoreBoard });
@@ -125,22 +123,29 @@ function App({}) {
       restartButtonRef.current.focus();
     }
   }, [gameOver]);
-    const handleMapSizeChange = (event) => {
-        if (mapSize === event.target.value) return;
-        setMapSize(event.target.value);
-        setSnake([{ x: parseInt(event.target.value) / 2, y: parseInt(event.target.value) / 2 }]);
-        setFood({ x: parseInt(Math.random() * event.target.value), y: parseInt(Math.random() * event.target.value) });
-    };
-    
-    const handleSnakeSpeedChange = (event) => {
-        if (snakeSpeed === event.target.value) return;
-        setSnakeSpeed(event.target.value);
-    }
+  const handleMapSizeChange = (event) => {
+    if (mapSize === event.target.value) return;
+    setMapSize(event.target.value);
+    setSnake([
+      {
+        x: parseInt(event.target.value) / 2,
+        y: parseInt(event.target.value) / 2,
+      },
+    ]);
+    setFood({
+      x: parseInt(Math.random() * event.target.value),
+      y: parseInt(Math.random() * event.target.value),
+    });
+  };
 
+  const handleSnakeSpeedChange = (event) => {
+    if (snakeSpeed === event.target.value) return;
+    setSnakeSpeed(event.target.value);
+  };
 
-    /** Modifier la valeur du champs text */
-  function handleChange(e) {    
-    setName( e.target.value );
+  /** Modifier la valeur du champs text */
+  function handleChange(e) {
+    setName(e.target.value);
   }
 
   return (
