@@ -100,18 +100,15 @@ function App() {
     setMapSize(parseInt(event.target.value));
     setSnake([{ x: parseInt(event.target.value) / 2, y: parseInt(event.target.value) / 2 }]);
     setFood({ x: parseInt(Math.random() * event.target.value), y: parseInt(Math.random() * event.target.value) });
-};
+    };
+    
+    const handleSnakeSpeedChange = (event) => {
+        if (speed === parseInt(event.target.value)) return;
+        setSpeed(parseInt(event.target.value));
+    }
 
     return (
         <>
-        <div>
-            <label htmlFor="mapSize">Map Size: </label>
-            <select id="mapSize" onChange={handleMapSizeChange} disabled={!gameOver}>
-                <option value={16}>16</option>
-                <option value={24}>24</option>
-                <option value={32}>32</option>
-            </select>
-        </div>
         { gameOver &&
             <>
                 <p className="game-over">Game Over</p>
@@ -125,6 +122,20 @@ function App() {
                 >Restart</button>
             </>
         }
+        <div>
+            <label htmlFor="mapSize">Map Size: </label>
+            <select id="mapSize" onChange={handleMapSizeChange} disabled={!gameOver}>
+                <option value={16}>Small</option>
+                <option value={24}>Normal</option>
+                <option value={32}>Huge</option>
+            </select>
+            <label htmlFor="mapSize">Snake Speed: </label>
+            <select id="snakeSpeed" onChange={handleSnakeSpeedChange} disabled={!gameOver}>
+                <option value={400}>Slow</option>
+                <option value={200}>Normal</option>
+                <option value={100}>Fast</option>
+            </select>
+        </div>
       <div className="game-board" style={{gridTemplateColumns: `repeat(${mapSize}, 20px)`, gridTemplateRows: `repeat(${mapSize}, 20px)`}}>
         {Array.from({ length: mapSize }).map((_, row) =>
           Array.from({ length: mapSize }).map((_, col) => (
