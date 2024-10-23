@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 function App() {
   const [mapSize, setMapSize] = useState(16);
-  const [snakeSpeed, setSnakeSpeed] = useState(100);
+  const [snakeSpeed, setSnakeSpeed] = useState(500);
   const [snake, setSnake] = useState([{ x: mapSize / 2, y: mapSize / 2 }]);
   const [food, setFood] = useState({
     x: parseInt(Math.random() * mapSize),
@@ -12,7 +12,7 @@ function App() {
   });
   const [direction, setDirection] = useState("RIGHT");
   const [gameOver, setGameOver] = useState(false);
-  const [scoreBoard, setScoreBoard] = useState([
+  const [scoreBoard, setScoreBoard] = useState(JSON.parse(localStorage.getItem('scoreBoard')) ?? [
     { name: "Player 1", score: 10 },
     { name: "Player 2", score: 20 },
     { name: "Player 3", score: 30 },
@@ -122,12 +122,13 @@ function App() {
       restartButtonRef.current.focus();
     }
   }, [gameOver]);
+  
     const handleMapSizeChange = (event) => {
-        if (mapSize === event.target.value) return;
-        setMapSize(event.target.value);
-        setSnake([{ x: parseInt(event.target.value) / 2, y: parseInt(event.target.value) / 2 }]);
-        setFood({ x: parseInt(Math.random() * event.target.value), y: parseInt(Math.random() * event.target.value) });
-    };
+    if (mapSize === event.target.value) return;
+    setMapSize(event.target.value);
+    setSnake([{ x: parseInt(event.target.value) / 2, y: parseInt(event.target.value) / 2 }]);
+    setFood({ x: parseInt(Math.random() * event.target.value), y: parseInt(Math.random() * event.target.value) });
+};
     
     const handleSnakeSpeedChange = (event) => {
         if (snakeSpeed === event.target.value) return;
@@ -159,7 +160,9 @@ function App() {
                     setFood({ x: parseInt(Math.random() * mapSize), y: parseInt(Math.random() * mapSize) });
                 } }
                     ref={ restartButtonRef }
-                >Restart</button>
+                >
+                    Restart
+                </button>
                 <form onSubmit={handleSubmit} >
                   <input type="text" value={name} label="input your name: " name="name" onChange={handleChange} />
                 </form>
@@ -179,9 +182,7 @@ function App() {
                 <option value={100}>Fast</option>
             </select>
         </div>
-        <div className="game-info">
-          <div>Score: {score}</div>
-      </div>
+        <div>Score: {score}</div>
       <div className="game-board" style={{gridTemplateColumns: `repeat(${mapSize}, 20px)`, gridTemplateRows: `repeat(${mapSize}, 20px)`}}>
         {Array.from({ length: mapSize }).map((_, row) =>
           Array.from({ length: mapSize }).map((_, col) => (
@@ -198,6 +199,14 @@ function App() {
           ))
         )
       }
+    <div className="score-board">
+        <h2>Score Board</h2>
+        <ol>
+            {scoreBoard?.map((player, index) => (
+                <li key={index}>{player.name}: {player.score}</li>
+            ))}
+        </ol>
+        </div>
     </div>
     </div>
   );
