@@ -1,12 +1,15 @@
 import "./App.css";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 function App() {
-  const [mapSize, setMapSize] = useState(20);
+  const [mapSize, setMapSize] = useState(16);
   const [speed, setSpeed] = useState(200);
-  const [snake, setSnake] = useState([{ x: mapSize/2, y: mapSize/2 }]);
-  const [food, setFood] = useState({ x: parseInt(Math.random() * mapSize), y: parseInt(Math.random() * mapSize) });
+  const [snake, setSnake] = useState([{ x: mapSize / 2, y: mapSize / 2 }]);
+  const [food, setFood] = useState({
+    x: parseInt(Math.random() * mapSize),
+    y: parseInt(Math.random() * mapSize),
+  });
   const [direction, setDirection] = useState("RIGHT");
   const [gameOver, setGameOver] = useState(false);
   const [scoreBoard, setScoreBoard] = useState([
@@ -18,6 +21,7 @@ function App() {
   ]);
   const [score, setScore] = useState(0);
   const [name, setName] = useState("");
+  const restartButtonRef = useRef(null);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -72,8 +76,8 @@ function App() {
       newSnake.unshift(head);
       if (head.x === food.x && head.y === food.y) {
         setFood({
-          x: Math.floor(Math.random() * 20),
-          y: Math.floor(Math.random() * 20),
+          x: Math.floor(Math.random() * mapSize),
+          y: Math.floor(Math.random() * mapSize),
         });
         setScore(score + 1);
       } else {
@@ -82,9 +86,9 @@ function App() {
 
       if (
         head.x < 0 ||
-        head.x >= 20 ||
+        head.x >= mapSize ||
         head.y < 0 ||
-        head.y >= 20 ||
+        head.y >= mapSize ||
         newSnake
           .slice(1)
           .some((segment) => segment.x === head.x && segment.y === head.y)
@@ -113,6 +117,22 @@ function App() {
     setScore(0);
     
   }
+  useEffect(() => {
+    if (gameOver && restartButtonRef.current) {
+      restartButtonRef.current.focus();
+    }
+  }, [gameOver]);
+    const handleMapSizeChange = (event) => {
+    if (mapSize === parseInt(event.target.value)) return;
+    setMapSize(parseInt(event.target.value));
+    setSnake([{ x: parseInt(event.target.value) / 2, y: parseInt(event.target.value) / 2 }]);
+    setFood({ x: parseInt(Math.random() * event.target.value), y: parseInt(Math.random() * event.target.value) });
+    };
+    
+    const handleSnakeSpeedChange = (event) => {
+        if (speed === parseInt(event.target.value)) return;
+        setSpeed(parseInt(event.target.value));
+    }
   /**
    * Local Storage for Score Board
    */
@@ -127,38 +147,59 @@ function App() {
     
     setName( e.target.value );
   }
-
-  return (
-    <div class="game">
-      <div className="game-board">
-        {gameOver ? (
-          <div className="game-over">
-            <h1>Game Over</h1>
-            <form  onSubmit={handleSubmit} >
-              <input type="text" value={name} label="input your name: " name="name" onChange={handleChange} />
-            </form>
-          </div>
-        ) : (
-          Array.from({ length: 20 }).map((_, row) =>
-            Array.from({ length: 20 }).map((_, col) => (
-              <div
-                key={`${row}-${col}`}
-                className={`cell ${
-                  snake.some((segment) => segment.x === col && segment.y === row)
-                    ? "snake"
-                    : food.x === col && food.y === row
-                    ? "food"
-                    : ""
-                }`}
-              />
-            ))
-          )
-        )}
+    return (
+        <>
+        { gameOver &&
+            <>
+                <p className="game-over">Game Over</p>
+                <button className="restart" onClick={ () => {
+                    setGameOver(false);
+                    setDirection("RIGHT");
+                    setSnake([{ x: mapSize / 2, y: mapSize / 2 }]);
+                    setFood({ x: parseInt(Math.random() * mapSize), y: parseInt(Math.random() * mapSize) });
+                } }
+                    ref={ restartButtonRef }
+                >Restart</button>
+                <form  onSubmit={handleSubmit} >
+                  <input type="text" value={name} label="input your name: " name="name" onChange={handleChange} />
+                </form>
+            </>
+        }
+        <div>
+            <label htmlFor="mapSize">Map Size: </label>
+            <select id="mapSize" onChange={handleMapSizeChange} disabled={!gameOver}>
+                <option value={16}>Small</option>
+                <option value={24}>Normal</option>
+                <option value={32}>Huge</option>
+            </select>
+            <label htmlFor="mapSize">Snake Speed: </label>
+            <select id="snakeSpeed" onChange={handleSnakeSpeedChange} disabled={!gameOver}>
+                <option value={400}>Slow</option>
+                <option value={200}>Normal</option>
+                <option value={100}>Fast</option>
+            </select>
+        </div>
+        <div className="game-info">
+          <div>Score: {score}</div>
       </div>
-      <div className="game-info">
-        <div>Score: {score}</div>
-      </div>
+      <div className="game-board" style={{gridTemplateColumns: `repeat(${mapSize}, 20px)`, gridTemplateRows: `repeat(${mapSize}, 20px)`}}>
+        {Array.from({ length: mapSize }).map((_, row) =>
+          Array.from({ length: mapSize }).map((_, col) => (
+            <div
+              key={`${row}-${col}`}
+              className={`cell ${
+                snake.some((segment) => segment.x === col && segment.y === row)
+                  ? "snake"
+                  : food.x === col && food.y === row
+                  ? "food"
+                  : ""
+              }`}
+            />
+          ))
+        )
+      }
     </div>
+    </>
   );
 }
 
