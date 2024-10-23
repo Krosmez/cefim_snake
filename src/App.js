@@ -1,11 +1,13 @@
 import "./App.css";
-
+import { useGlobalContext } from "./context/GlobalContext";
 import React, { useEffect, useRef, useState } from "react";
+
 
 import Container from "./components/Container";
 import Header from "./components/Header";
 
 function App({}) {
+  const { state, dispatch } = useGlobalContext();
   const [mapSize, setMapSize] = useState(16);
   const [snakeSpeed, setSnakeSpeed] = useState(100);
   const [snake, setSnake] = useState([{ x: mapSize / 2, y: mapSize / 2 }]);
@@ -15,16 +17,11 @@ function App({}) {
   });
   const [direction, setDirection] = useState("RIGHT");
   const [gameOver, setGameOver] = useState(false);
-  const [scoreBoard, setScoreBoard] = useState([
-    { name: "Player 1", score: 10 },
-    { name: "Player 2", score: 20 },
-    { name: "Player 3", score: 30 },
-    { name: "Player 4", score: 40 },
-    { name: "Player 5", score: 50 },
-  ]);
   const [score, setScore] = useState(0);
   const [name, setName] = useState("");
   const restartButtonRef = useRef(null);
+
+ 
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -106,17 +103,20 @@ function App({}) {
     return () => clearInterval(interval);
   }, [snake, direction, food, gameOver]);
 
+  useEffect(() => {
+    console.log("state", state.scoreBoard);
+  }, [state.scoreBoard]);
+
   /**
    * Save new score in scoreBoard
    */
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const newScoreBoard = [...scoreBoard, { name, score }];
-
-    // newScoreBoard.sort((a, b) => b.score - a.score);
-    // newScoreBoard.pop();
-    setScoreBoard(newScoreBoard);
+    const newScoreBoard = [...state.scoreBoard, {  name,  score }];
+    
+    newScoreBoard.sort((a, b) => b.score - a.score);
+    newScoreBoard.pop();
+    dispatch({ type: "UPDATE_SCOREBOARD", payload: newScoreBoard });
     setScore(0);
   };
 
@@ -125,16 +125,22 @@ function App({}) {
       restartButtonRef.current.focus();
     }
   }, [gameOver]);
+    const handleMapSizeChange = (event) => {
+        if (mapSize === event.target.value) return;
+        setMapSize(event.target.value);
+        setSnake([{ x: parseInt(event.target.value) / 2, y: parseInt(event.target.value) / 2 }]);
+        setFood({ x: parseInt(Math.random() * event.target.value), y: parseInt(Math.random() * event.target.value) });
+    };
+    
+    const handleSnakeSpeedChange = (event) => {
+        if (snakeSpeed === event.target.value) return;
+        setSnakeSpeed(event.target.value);
+    }
 
-  /**
-   * Local Storage for Score Board
-   */
-  useEffect(() => {
-    localStorage.setItem("scoreBoard", JSON.stringify(scoreBoard));
-  }, [scoreBoard]);
 
-  function handleChange(e) {
-    setName(e.target.value);
+    /** Modifier la valeur du champs text */
+  function handleChange(e) {    
+    setName( e.target.value );
   }
 
   return (
