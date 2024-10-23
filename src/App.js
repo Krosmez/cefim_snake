@@ -9,6 +9,15 @@ function App() {
   const [food, setFood] = useState({ x: parseInt(Math.random() * mapSize), y: parseInt(Math.random() * mapSize) });
   const [direction, setDirection] = useState("RIGHT");
   const [gameOver, setGameOver] = useState(false);
+  const [scoreBoard, setScoreBoard] = useState([
+    { name: "Player 1", score: 10 },
+    { name: "Player 2", score: 20 },
+    { name: "Player 3", score: 30 },
+    { name: "Player 4", score: 40 },
+    { name: "Player 5", score: 50 },
+  ]);
+  const [score, setScore] = useState(0);
+  const [name, setName] = useState("");
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -66,6 +75,7 @@ function App() {
           x: Math.floor(Math.random() * 20),
           y: Math.floor(Math.random() * 20),
         });
+        setScore(score + 1);
       } else {
         newSnake.pop();
       }
@@ -89,26 +99,65 @@ function App() {
     return () => clearInterval(interval);
   }, [snake, direction, food, gameOver]);
 
+  /**
+   * Save new score in scoreBoard
+   */
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    const newScoreBoard = [...scoreBoard, {  name,  score }];
+    
+    // newScoreBoard.sort((a, b) => b.score - a.score);
+    // newScoreBoard.pop();
+    setScoreBoard(newScoreBoard);
+    setScore(0);
+    
+  }
+  /**
+   * Local Storage for Score Board
+   */
+  useEffect(() => {
+    localStorage.setItem("scoreBoard", JSON.stringify(scoreBoard));
+    console.log(scoreBoard);
+
+  }, [scoreBoard]);
+
+  function handleChange(e) {
+    // console.log(e.target.value);
+    
+    setName( e.target.value );
+  }
+
   return (
-    <div className="game-board">
-      {gameOver ? (
-        <div className="game-over">Game Over</div>
-      ) : (
-        Array.from({ length: 20 }).map((_, row) =>
-          Array.from({ length: 20 }).map((_, col) => (
-            <div
-              key={`${row}-${col}`}
-              className={`cell ${
-                snake.some((segment) => segment.x === col && segment.y === row)
-                  ? "snake"
-                  : food.x === col && food.y === row
-                  ? "food"
-                  : ""
-              }`}
-            />
-          ))
-        )
-      )}
+    <div class="game">
+      <div className="game-board">
+        {gameOver ? (
+          <div className="game-over">
+            <h1>Game Over</h1>
+            <form  onSubmit={handleSubmit} >
+              <input type="text" value={name} label="input your name: " name="name" onChange={handleChange} />
+            </form>
+          </div>
+        ) : (
+          Array.from({ length: 20 }).map((_, row) =>
+            Array.from({ length: 20 }).map((_, col) => (
+              <div
+                key={`${row}-${col}`}
+                className={`cell ${
+                  snake.some((segment) => segment.x === col && segment.y === row)
+                    ? "snake"
+                    : food.x === col && food.y === row
+                    ? "food"
+                    : ""
+                }`}
+              />
+            ))
+          )
+        )}
+      </div>
+      <div className="game-info">
+        <div>Score: {score}</div>
+      </div>
     </div>
   );
 }
