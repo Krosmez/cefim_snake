@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 function App() {
   const [mapSize, setMapSize] = useState(16);
-  const [speed, setSpeed] = useState(200);
+  const [snakeSpeed, setSnakeSpeed] = useState(200);
   const [snake, setSnake] = useState([{ x: mapSize / 2, y: mapSize / 2 }]);
   const [food, setFood] = useState({
     x: parseInt(Math.random() * mapSize),
@@ -89,7 +89,7 @@ function App() {
       }
     };
 
-    const interval = setInterval(moveSnake, speed);
+    const interval = setInterval(moveSnake, snakeSpeed);
     return () => clearInterval(interval);
   }, [snake, direction, food, gameOver]);
 
@@ -99,19 +99,19 @@ function App() {
     }
   }, [gameOver]);
     const handleMapSizeChange = (event) => {
-    if (mapSize === parseInt(event.target.value)) return;
-    setMapSize(parseInt(event.target.value));
-    setSnake([{ x: parseInt(event.target.value) / 2, y: parseInt(event.target.value) / 2 }]);
-    setFood({ x: parseInt(Math.random() * event.target.value), y: parseInt(Math.random() * event.target.value) });
+        if (mapSize === event.target.value) return;
+        setMapSize(event.target.value);
+        setSnake([{ x: parseInt(event.target.value) / 2, y: parseInt(event.target.value) / 2 }]);
+        setFood({ x: parseInt(Math.random() * event.target.value), y: parseInt(Math.random() * event.target.value) });
     };
     
     const handleSnakeSpeedChange = (event) => {
-        if (speed === parseInt(event.target.value)) return;
-        setSpeed(parseInt(event.target.value));
+        if (snakeSpeed === event.target.value) return;
+        setSnakeSpeed(event.target.value);
     }
 
     return (
-        <>
+        <div>
         { gameOver &&
             <>
                 <p className="game-over">Game Over</p>
@@ -134,8 +134,8 @@ function App() {
             </select>
             <label htmlFor="mapSize">Snake Speed: </label>
             <select id="snakeSpeed" onChange={handleSnakeSpeedChange} disabled={!gameOver}>
-                <option value={400}>Slow</option>
-                <option value={200}>Normal</option>
+                <option value={500}>Slow</option>
+                <option value={250}>Normal</option>
                 <option value={100}>Fast</option>
             </select>
         </div>
@@ -156,7 +156,7 @@ function App() {
         )
       }
     </div>
-    </>
+    </div>
   );
 }
 
