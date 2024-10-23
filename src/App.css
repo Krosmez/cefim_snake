@@ -1,3 +1,45 @@
+:root {
+    --primary-color: #D2FF72;
+    --secondary-color: #73EC8B;
+    --ternary-color: #54C392;
+    --snake-no-img-color: #D2FF72;
+    --food-no-img-color: #F95454;
+
+    /* For gradient later
+    #D2FF72
+    #73EC8B
+    #54C392
+    #15B392
+    */
+}
+
+.top-level {
+    max-width: 100%;
+    margin-right: 10%;
+    margin-left: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.end.game-board {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.end .restart {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+
 .game-board {
     display: grid;
     grid-template-columns: repeat(20, 20px);
@@ -12,16 +54,16 @@
 }
 
 .snake {
-    background-color: #000;
+    background-color: var(--primary-color);
 }
 
 .food {
-    background-color: red;
+    background-color: var(--food-no-img-color);
 }
 
 .game-over {
     grid-column: span 20;
     text-align: center;
     font-size: 24px;
-    color: red;
+    color: #F95454;
 }

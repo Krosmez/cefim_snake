@@ -1,12 +1,15 @@
 import "./App.css";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 function App() {
   const [mapSize, setMapSize] = useState(20);
   const [speed, setSpeed] = useState(200);
-  const [snake, setSnake] = useState([{ x: mapSize/2, y: mapSize/2 }]);
-  const [food, setFood] = useState({ x: parseInt(Math.random() * mapSize), y: parseInt(Math.random() * mapSize) });
+  const [snake, setSnake] = useState([{ x: mapSize / 2, y: mapSize / 2 }]);
+  const [food, setFood] = useState({
+    x: parseInt(Math.random() * mapSize),
+    y: parseInt(Math.random() * mapSize),
+  });
   const [direction, setDirection] = useState("RIGHT");
   const [gameOver, setGameOver] = useState(false);
   const restartButtonRef = useRef(null);
@@ -89,27 +92,34 @@ function App() {
     const interval = setInterval(moveSnake, speed);
     return () => clearInterval(interval);
   }, [snake, direction, food, gameOver]);
-    
+
   useEffect(() => {
     if (gameOver && restartButtonRef.current) {
-        restartButtonRef.current.focus();
+      restartButtonRef.current.focus();
     }
-}, [gameOver]);
+  }, [gameOver]);
 
   return (
-    <div className="game-board">
-          { gameOver ? (
-            <>
-              <p className="game-over">Game Over</p>
-              <button className="restart" onClick={ () => {
-                setGameOver(false);
-                setDirection("RIGHT");
-                setSnake([{ x: mapSize / 2, y: mapSize / 2 }]);
-                setFood({ x: parseInt(Math.random() * mapSize), y: parseInt(Math.random() * mapSize) });
-                } }
-                ref={restartButtonRef}
-                  >Restart</button>
-            </>
+    <div className={`game-board ${gameOver ? "end" : ""}`}>
+      {gameOver ? (
+        <>
+          <p className="game-over">Game Over</p>
+          <button
+            className="restart"
+            onClick={() => {
+              setGameOver(false);
+              setDirection("RIGHT");
+              setSnake([{ x: mapSize / 2, y: mapSize / 2 }]);
+              setFood({
+                x: parseInt(Math.random() * mapSize),
+                y: parseInt(Math.random() * mapSize),
+              });
+            }}
+            ref={restartButtonRef}
+          >
+            Restart
+          </button>
+        </>
       ) : (
         Array.from({ length: 20 }).map((_, row) =>
           Array.from({ length: 20 }).map((_, col) => (
