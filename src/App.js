@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 function App() {
   const [mapSize, setMapSize] = useState(16);
-  const [snakeSpeed, setSnakeSpeed] = useState(200);
+  const [snakeSpeed, setSnakeSpeed] = useState(100);
   const [snake, setSnake] = useState([{ x: mapSize / 2, y: mapSize / 2 }]);
   const [food, setFood] = useState({
     x: parseInt(Math.random() * mapSize),
@@ -27,16 +27,16 @@ function App() {
     const handleKeyDown = (e) => {
       switch (e.key) {
         case "ArrowUp":
-          setDirection("UP");
+          if (direction !== 'DOWN') setDirection("UP");
           break;
         case "ArrowDown":
-          setDirection("DOWN");
+            if (direction !== 'UP') setDirection("DOWN");
           break;
         case "ArrowLeft":
-          setDirection("LEFT");
+            if (direction !== 'RIGHT') setDirection("LEFT");
           break;
         case "ArrowRight":
-          setDirection("RIGHT");
+            if (direction !== 'LEFT') setDirection("RIGHT");
           break;
         default:
           break;
@@ -160,7 +160,7 @@ function App() {
                 } }
                     ref={ restartButtonRef }
                 >Restart</button>
-                <form  onSubmit={handleSubmit} >
+                <form onSubmit={handleSubmit} >
                   <input type="text" value={name} label="input your name: " name="name" onChange={handleChange} />
                 </form>
             </>
