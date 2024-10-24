@@ -1,5 +1,7 @@
 import "./style.css";
 
+import { useEffect, useState } from "react";
+
 import grass from "../../assets/grass.jpg";
 
 export const Map = ({
@@ -11,6 +13,12 @@ export const Map = ({
   food,
   direction,
 }) => {
+  const [isHead, setIsHead] = useState(snake[0]);
+
+  useEffect(() => {
+    setIsHead(snake[0]);
+  }, [isHead, snake]);
+
   const bodySnake = (col, row) => {
     if (snake.some((segment) => segment.x === col && segment.y === row)) {
       return true;

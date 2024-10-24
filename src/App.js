@@ -14,7 +14,7 @@ function App() {
   const [mapSize, setMapSize] = useState(16);
   const [snakeSpeed, setSnakeSpeed] = useState(100);
   const [snake, setSnake] = useState([{ x: mapSize / 2, y: mapSize / 2 }]);
-  const [isHead, setIsHead] = useState(snake[0]);
+
   const [food, setFood] = useState({
     x: parseInt(Math.random() * mapSize),
     y: parseInt(Math.random() * mapSize),
@@ -24,10 +24,6 @@ function App() {
   const [score, setScore] = useState(0);
   const [pause, setPause] = useState(true);
   const [isStarted, setIsStarted] = useState(false);
-
-  useEffect(() => {
-    setIsHead(snake[0]);
-  }, [isHead, snake]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
