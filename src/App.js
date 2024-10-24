@@ -16,9 +16,9 @@ function App() {
   });
   const [direction, setDirection] = useState("RIGHT");
   const [gameOver, setGameOver] = useState(false);
-    const [score, setScore] = useState(0);
-    const [pause, setPause] = useState(true);
-    const [isStarted, setIsStarted] = useState(false);
+  const [score, setScore] = useState(0);
+  const [pause, setPause] = useState(true);
+  const [isStarted, setIsStarted] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -32,79 +32,79 @@ function App() {
         case "ArrowLeft":
           if (direction !== "RIGHT") setDirection("LEFT");
           break;
-          case "ArrowRight":
+        case "ArrowRight":
           if (direction !== "LEFT") setDirection("RIGHT");
-        break;
-          case " ":
-              setIsStarted(true);
-              setPause(!pause);
-            break; 
+          break;
+        case " ":
+          setIsStarted(true);
+          setPause(!pause);
+          break;
         default:
           break;
       }
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => {
-        document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
-    }, [direction, pause]);
+  }, [direction, pause]);
 
-    useEffect(() => {
-        if (gameOver) return;
+  useEffect(() => {
+    if (gameOver) return;
 
-        const moveSnake = () => {
-            if (pause) return;
-            const newSnake = [...snake];
-            const head = { ...newSnake[0] };
+    const moveSnake = () => {
+      if (pause) return;
+      const newSnake = [...snake];
+      const head = { ...newSnake[0] };
 
-            switch (direction) {
-                case "UP":
-                    head.y -= 1;
-                    break;
-                case "DOWN":
-                    head.y += 1;
-                    break;
-                case "LEFT":
-                    head.x -= 1;
-                    break;
-                case "RIGHT":
-                    head.x += 1;
-                    break;
-                default:
-                    break;
-            }
+      switch (direction) {
+        case "UP":
+          head.y -= 1;
+          break;
+        case "DOWN":
+          head.y += 1;
+          break;
+        case "LEFT":
+          head.x -= 1;
+          break;
+        case "RIGHT":
+          head.x += 1;
+          break;
+        default:
+          break;
+      }
 
-            newSnake.unshift(head);
-            if (head.x === food.x && head.y === food.y) {
-                setFood({
-                    x: Math.floor(Math.random() * mapSize),
-                    y: Math.floor(Math.random() * mapSize),
-                });
-                setScore(score + 1);
-            } else {
-                newSnake.pop();
-            }
+      newSnake.unshift(head);
+      if (head.x === food.x && head.y === food.y) {
+        setFood({
+          x: Math.floor(Math.random() * mapSize),
+          y: Math.floor(Math.random() * mapSize),
+        });
+        setScore(score + 1);
+      } else {
+        newSnake.pop();
+      }
 
-            if (
-                head.x < 0 ||
-                head.x >= mapSize ||
-                head.y < 0 ||
-                head.y >= mapSize ||
-                newSnake
-                    .slice(1)
-                    .some((segment) => segment.x === head.x && segment.y === head.y)
-            ) {
-                setPause(true);
-                setIsStarted(false);
-                setGameOver(true);
-            } else {
-                setSnake(newSnake);
-            }
-        };
+      if (
+        head.x < 0 ||
+        head.x >= mapSize ||
+        head.y < 0 ||
+        head.y >= mapSize ||
+        newSnake
+          .slice(1)
+          .some((segment) => segment.x === head.x && segment.y === head.y)
+      ) {
+        setPause(true);
+        setIsStarted(false);
+        setGameOver(true);
+      } else {
+        setSnake(newSnake);
+      }
+    };
 
-        const interval = setInterval(moveSnake, snakeSpeed);
-        return () => clearInterval(interval);
-    }, [snake, direction, food, gameOver, snakeSpeed, mapSize, score, pause]);
+    const interval = setInterval(moveSnake, snakeSpeed);
+    return () => clearInterval(interval);
+  }, [snake, direction, food, gameOver, snakeSpeed, mapSize, score, pause]);
 
   return (
     <>
@@ -126,43 +126,43 @@ function App() {
         mapSize={mapSize}
         snakeSpeed={snakeSpeed}
         onMapChange={(e) => setMapSize(e)}
-              onSpeedChange={ (e) => setSnakeSpeed(e) }
-              pause={ pause }
-              isStarted={isStarted}
+        onSpeedChange={(e) => setSnakeSpeed(e)}
+        pause={pause}
+        isStarted={isStarted}
       />
-          <Container>
-          <div className="game-board-container">
+      <Container>
+        <div className="game-board-container">
           {pause && (
-                    <div className="pause-overlay">
-                          <span className="pause-icon">
-                              {isStarted ? "⏸️" : "▶️" }
-                        </span>
-                    </div>
-                )}
-        <div
-          className="game-board"
-          style={{
-            gridTemplateColumns: `repeat(${mapSize}, 20px)`,
-            gridTemplateRows: `repeat(${mapSize}, 20px)`,
-          }}
-        >
-          {Array.from({ length: mapSize }).map((_, row) =>
-            Array.from({ length: mapSize }).map((_, col) => (
-              <div
-                key={`${row}-${col}`}
-                className={`cell ${
-                  snake.some(
-                    (segment) => segment.x === col && segment.y === row
-                  )
-                    ? "snake"
-                    : food.x === col && food.y === row
-                    ? "food"
-                    : ""
-                }`}
-              />
-            ))
+            <div className="pause-overlay">
+              <span className="pause-icon" onClick={() => setPause(!pause)}>
+                {isStarted ? "⏸️" : "▶️"}
+              </span>
+            </div>
           )}
-        </div>
+          <div
+            className="game-board"
+            style={{
+              gridTemplateColumns: `repeat(${mapSize}, 20px)`,
+              gridTemplateRows: `repeat(${mapSize}, 20px)`,
+            }}
+          >
+            {Array.from({ length: mapSize }).map((_, row) =>
+              Array.from({ length: mapSize }).map((_, col) => (
+                <div
+                  key={`${row}-${col}`}
+                  className={`cell ${
+                    snake.some(
+                      (segment) => segment.x === col && segment.y === row
+                    )
+                      ? "snake"
+                      : food.x === col && food.y === row
+                      ? "food"
+                      : ""
+                  }`}
+                />
+              ))
+            )}
+          </div>
         </div>
       </Container>
     </>
