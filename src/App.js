@@ -7,6 +7,7 @@ import GameOver from "./components/GameOver";
 import Header from "./components/Header";
 import Map from "./components/Map";
 import { useGlobalContext } from "./context/GlobalContext";
+import ScoreBoard from "./components/ScoreBoard";
 
 function App() {
   const [mapSize, setMapSize] = useState(16);
@@ -151,7 +152,8 @@ function App() {
           mapSize={mapSize}
           snake={snake}
           food={food}
-        />
+        /
+        <ScoreBoard/>
       </Container>
     </>
   );
