@@ -22,8 +22,8 @@ function App() {
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [pause, setPause] = useState(true);
-    const [isStarted, setIsStarted] = useState(false);
-    const [subjectiveControls, setSubjectiveControls] = useState(false);
+  const [isStarted, setIsStarted] = useState(false);
+  const [subjectiveControls, setSubjectiveControls] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -34,37 +34,41 @@ function App() {
         case "ArrowDown":
           if (direction !== "UP" && !subjectiveControls) setDirection("DOWN");
           break;
-          case "ArrowLeft":
-              if (subjectiveControls) switch (direction) {
-                  case "UP":
-                      setDirection("LEFT");
-                      break;
-                  case "RIGHT":
-                      setDirection("UP");
-                      break;
-                  case "DOWN":
-                      setDirection("RIGHT");
-                      break;
-                  default:
-                      setDirection("DOWN");
-                      break;
-              } else if (direction !== "RIGHT") setDirection("LEFT");
-        break;
-        case "ArrowRight":
-            if (subjectiveControls) switch (direction) {
-                case "UP":
-                setDirection("RIGHT");
-                break;
-                case "RIGHT":
-                setDirection("DOWN");
-                break;
-                case "DOWN":
+        case "ArrowLeft":
+          if (subjectiveControls)
+            switch (direction) {
+              case "UP":
                 setDirection("LEFT");
                 break;
-                default:
+              case "RIGHT":
                 setDirection("UP");
                 break;
-            } else if (direction !== "LEFT") setDirection("RIGHT");
+              case "DOWN":
+                setDirection("RIGHT");
+                break;
+              default:
+                setDirection("DOWN");
+                break;
+            }
+          else if (direction !== "RIGHT") setDirection("LEFT");
+          break;
+        case "ArrowRight":
+          if (subjectiveControls)
+            switch (direction) {
+              case "UP":
+                setDirection("RIGHT");
+                break;
+              case "RIGHT":
+                setDirection("DOWN");
+                break;
+              case "DOWN":
+                setDirection("LEFT");
+                break;
+              default:
+                setDirection("UP");
+                break;
+            }
+          else if (direction !== "LEFT") setDirection("RIGHT");
           break;
         case " ":
           setIsStarted(true);
@@ -133,7 +137,7 @@ function App() {
       }
     };
 
-    const interval = setInterval(moveSnake, snakeSpeed);
+    const interval = setInterval(moveSnake, 1000 - snakeSpeed);
     return () => clearInterval(interval);
   }, [snake, direction, food, gameOver, snakeSpeed, mapSize, score, pause]);
 
@@ -166,26 +170,27 @@ function App() {
         onMapChange={(e) => setMapSize(e)}
         onSpeedChange={(e) => setSnakeSpeed(e)}
         pause={pause}
-        isStarted={ isStarted }
-        onSubjectiveControlsChange={ () => setSubjectiveControls(!subjectiveControls) }
+        isStarted={isStarted}
+        onSubjectiveControlsChange={() =>
+          setSubjectiveControls(!subjectiveControls)
+        }
       />
       <Container>
         <div className="active-score">
           <span>Score: {score}</span>
         </div>
-        <Map
-          pause={pause}
-          onClickPause={ () => {
-            setPause(!pause);
-            setIsStarted(true);
-          } }
-          isStarted={isStarted}
-          mapSize={mapSize}
-          snake={snake}
-          food={food}
-          direction={direction}
-        />
-        <ScoreBoard />
+        <div className="main-screen">
+          <ScoreBoard />
+          <Map
+            pause={pause}
+            onClickPause={() => setPause(!pause)}
+            isStarted={isStarted}
+            mapSize={mapSize}
+            snake={snake}
+            food={food}
+            direction={direction}
+          />
+        </div>
       </Container>
     </>
   );

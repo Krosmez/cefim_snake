@@ -1,9 +1,5 @@
-.game-board-container {
-    position: relative;
-    width: fit-content;
-}
-
 .game-board {
+    position: relative;
     display: grid;
     gap: 1px;
 }
@@ -19,10 +15,6 @@
 .snake {
     background-color: var(--primary-color);
     z-index: 1;
-}
-
-.food {
-    background-color: var(--food-no-img-color);
 }
 
 .game-over {

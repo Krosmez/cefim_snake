@@ -88,44 +88,41 @@ const getClassName = (col, row) => {
         className += "food";
     }
     return className;
-};
-    
-    const cellSize={width: `${42-mapSize}px`, height: `${42-mapSize}px`};
+  };
+
+  const cellSize = { width: `${42 - mapSize}px`, height: `${42 - mapSize}px` };
 
   return (
-    <div className="game-board-container">
-      {pause && (
-        <div className="pause-overlay">
-          <span className="pause-icon" onClick={onClickPause}>
-            {isStarted ? "⏸️" : "▶️"}
-          </span>
-        </div>
-      )}
+    <>
       <div
         className="game-board"
         style={{
-          gridTemplateColumns: `repeat(${mapSize}, ${42-mapSize}px)`,
-          gridTemplateRows: `repeat(${mapSize}, ${42-mapSize}px)`,
+          gridTemplateColumns: `repeat(${mapSize}, ${42 - mapSize}px)`,
+          gridTemplateRows: `repeat(${mapSize}, ${42 - mapSize}px)`,
         }}
       >
+        {pause && (
+          <div className="pause-overlay">
+            <span className="pause-icon" onClick={onClickPause}>
+              {isStarted ? "⏸️" : "▶️"}
+            </span>
+          </div>
+        )}
         {Array.from({ length: mapSize }).map((_, row) =>
           Array.from({ length: mapSize }).map((_, col) => (
             <div
               key={`${row}-${col}`}
               className={`cell ${getClassName(col, row)}`}
               style={
-                snake.some(
-                  (segment) => segment.x === col && segment.y === row
-                ) ||
-                (food.x === col && food.y === row)
-                  ? {...cellSize}
+                snake.some((segment) => segment.x === col && segment.y === row)
+                  ? { ...cellSize }
                   : { backgroundImage: `url(${grass})`, ...cellSize }
               }
             />
           ))
         )}
       </div>
-    </div>
+    </>
   );
 };
 export default Map;

@@ -31,10 +31,14 @@ const GameOver = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newScoreBoard = [...state.scoreBoard, { name, score }];
-    newScoreBoard.sort((a, b) => b.score - a.score);
-    dispatch({ type: "UPDATE_SCOREBOARD", payload: newScoreBoard });
-    localStorage.setItem("scoreBoard", JSON.stringify(newScoreBoard));
+    const updatedScoreBoard = [...(state?.scoreBoard || []), { name, score }];
+
+    updatedScoreBoard.sort((a, b) => b.score - a.score);
+
+    localStorage.setItem("scoreBoard", JSON.stringify(updatedScoreBoard));
+
+    dispatch({ type: "UPDATE_SCOREBOARD", payload: updatedScoreBoard });
+
     setScore(0);
   };
 
@@ -43,7 +47,7 @@ const GameOver = ({
       <div className="modal-body">
         <h2>Your score: {score}</h2>
         <ul className="a">
-          {state.scoreBoard.slice(0, 3).map((item, index) => (
+          {state.scoreBoard?.slice(0, 3).map((item, index) => (
             <li key={index}>
               {item.name}: {item.score}
             </li>

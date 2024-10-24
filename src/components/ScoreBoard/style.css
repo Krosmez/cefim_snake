@@ -1,8 +1,28 @@
 .leaderboard {
+    max-height: 45rem;
+    min-width: 25rem;
     text-align: center;
     border-radius: 1rem;
     padding: 1rem;
     background-color: var(--ternary-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
+    overflow-y: scroll;
+}
+
+.leaderboard .container:before,
+.leaderboard .container:after {
+    content: '⭐';
+    text-align: center;
+}
+
+.leaderboard .container {}
+
+.scoreList {}
+
+.scoreItem {
+    border-bottom: 1px solid var(--primary-color);
+}
+
+.scoreItem:last-child {
+    border-bottom: none;
 }
