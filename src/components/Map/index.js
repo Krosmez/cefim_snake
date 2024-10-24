@@ -9,7 +9,46 @@ export const Map = ({
   mapSize,
   snake,
   food,
+  direction,
 }) => {
+  const bodySnake = (col, row) => {
+    if (snake.some((segment) => segment.x === col && segment.y === row)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const isFoodEaten = (col, row) => {
+    if (food.x === col && food.y === row) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const isHeadSnake = (col, row) => {
+    if (isHead.x === col && isHead.y === row) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const getClassName = (col, row) => {
+    let className = "";
+    const headDirection = direction.toLowerCase();
+
+    if (isHeadSnake(col, row)) {
+      className += `snake-head snake-head-${headDirection}`;
+    } else if (bodySnake(col, row)) {
+      className += "snake";
+    } else if (isFoodEaten(col, row)) {
+      className += "food";
+    }
+    return className;
+  };
+
   return (
     <div className="game-board-container">
       {pause && (
@@ -30,13 +69,7 @@ export const Map = ({
           Array.from({ length: mapSize }).map((_, col) => (
             <div
               key={`${row}-${col}`}
-              className={`cell ${
-                snake.some((segment) => segment.x === col && segment.y === row)
-                  ? "snake"
-                  : food.x === col && food.y === row
-                  ? "food"
-                  : ""
-              }`}
+              className={`cell ${getClassName(col, row)}`}
               style={
                 snake.some(
                   (segment) => segment.x === col && segment.y === row

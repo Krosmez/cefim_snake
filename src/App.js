@@ -1,18 +1,20 @@
 import "./App.css";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import Container from "./components/Container";
 import GameOver from "./components/GameOver";
 import Header from "./components/Header";
 import Map from "./components/Map";
-import { useGlobalContext } from "./context/GlobalContext";
 import ScoreBoard from "./components/ScoreBoard";
+import { useGlobalContext } from "./context/GlobalContext";
 
 function App() {
+  const { dispatch } = useGlobalContext();
   const [mapSize, setMapSize] = useState(16);
   const [snakeSpeed, setSnakeSpeed] = useState(100);
   const [snake, setSnake] = useState([{ x: mapSize / 2, y: mapSize / 2 }]);
+  const [isHead, setIsHead] = useState(snake[0]);
   const [food, setFood] = useState({
     x: parseInt(Math.random() * mapSize),
     y: parseInt(Math.random() * mapSize),
@@ -22,7 +24,10 @@ function App() {
   const [score, setScore] = useState(0);
   const [pause, setPause] = useState(true);
   const [isStarted, setIsStarted] = useState(false);
-  const { dispatch } = useGlobalContext();
+
+  useEffect(() => {
+    setIsHead(snake[0]);
+  }, [isHead, snake]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -152,8 +157,9 @@ function App() {
           mapSize={mapSize}
           snake={snake}
           food={food}
+          direction={direction}
         />
-        <ScoreBoard/>
+        <ScoreBoard />
       </Container>
     </>
   );
