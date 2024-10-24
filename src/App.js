@@ -139,10 +139,12 @@ const { state, dispatch } = useGlobalContext();
     }
   }
 
-  function className(col, row) {
+  const getClassName = (col, row) => {
     let className = "";
+    const headDirection = direction.toLowerCase();
+    
     if (isHeadSnake(col, row)) {
-        className += "snake-head";
+        className += `snake-head snake-head-${headDirection}`;
     } else if (bodySnake(col, row)) {
         className += "snake";
     } else if (isFoodEaten(col, row)) {
@@ -177,6 +179,7 @@ const { state, dispatch } = useGlobalContext();
       />
       <Container>
         <div className="game-board-container">
+            <div>{direction}</div>
           {pause && (
             <div className="pause-overlay">
               <span className="pause-icon" onClick={() => setPause(!pause)}>
@@ -195,7 +198,7 @@ const { state, dispatch } = useGlobalContext();
               Array.from({ length: mapSize }).map((_, col) => (
                 <div
                   key={`${row}-${col}`}
-                  className={`cell ${className(col, row)}`}
+                  className={`cell ${getClassName(col, row)}`}
                 />
               ))
             )}

@@ -62,13 +62,25 @@
     background-repeat: no-repeat;
     background-position: center;
 }
+.snake-head.snake-head-up {
+    transform: rotate(0deg);
+}
+.snake-head.snake-head-right {
+    transform: rotate(90deg);
+}
+.snake-head.snake-head-down {
+    transform: rotate(180deg);
+}
+.snake-head.snake-head-left {
+    transform: rotate(270deg);
+}
 .food {
     /* background-image: url('./assets/apple.png'); */
-    /* background-image: var(--food-img); */
+    background-image: var(--food-img);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    background-color: var(--food-no-img-color);
+    /* background-color: var(--food-no-img-color); */
 
 }
 
