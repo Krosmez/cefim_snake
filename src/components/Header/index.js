@@ -3,11 +3,10 @@ import "./style.css";
 import Container from "../Container";
 
 export const Header = ({
-  score,
   onMapChange,
   onSpeedChange,
   mapSize,
-snakeSpeed,
+  snakeSpeed,
   isStarted,
 }) => {
   const handleMapSizeChange = (event) => {
@@ -47,9 +46,6 @@ snakeSpeed,
             <option value={250}>Normal</option>
             <option value={100}>Fast</option>
           </select>
-        </div>
-        <div className="game-info">
-          <div>Score: {score}</div>
         </div>
       </Container>
     </header>
