@@ -3,7 +3,9 @@
     --secondary-color: #73EC8B;
     --ternary-color: #378e68;
     --snake-no-img-color: #D2FF72;
-    --snake-img-head: url('./assets/snake-head1.png');
+    /* --snake-img-head: url('./assets/snake-head.png'); */
+    --snake-img-head: url('./assets/head_up.png');
+    --snake-img-tail: url('./assets/tail_down.png');
     --food-no-img-color: #F95454;
     --secondary-light: #73ec8b8d;
 
@@ -52,7 +54,62 @@
 .snake-head.snake-head-left {
     transform: rotate(270deg);
 }
+.snake-body-vertical{
+    background-image: url('./assets/body_vertical.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.snake-body-horizontal{
+    background-image: url('./assets/body_horizontal.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.snake-turn-top-left{
+    background-image: url('./assets/body_topleft.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.snake-turn-top-right{
+    background-image: url('./assets/body_topright.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.snake-turn-bottom-left{
+    background-image: url('./assets/body_bottomleft.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.snake-turn-bottom-right{
+    background-image: url('./assets/body_bottomright.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.snake-tail {
+    background-image: var(--snake-img-tail);
+    background-size: cover;
+}
 
+.snake-tail-up {
+    transform: rotate(0deg);
+}
+
+.snake-tail-right {
+    transform: rotate(90deg);
+}
+
+.snake-tail-down {
+    transform: rotate(180deg);
+}
+
+.snake-tail-left {
+    transform: rotate(270deg);
+}
 .food {
     position: relative;
 }
