@@ -11,6 +11,7 @@ function App() {
     const [mapSize, setMapSize] = useState(16);
     const [snakeSpeed, setSnakeSpeed] = useState(500);
     const [snake, setSnake] = useState([{ x: mapSize / 2, y: mapSize / 2 }]);
+    const [isHead, setIsHead] = useState(snake[0]);
     const [food, setFood] = useState({
         x: parseInt(Math.random() * mapSize),
         y: parseInt(Math.random() * mapSize),
@@ -30,6 +31,9 @@ function App() {
     const [name, setName] = useState("");
     const restartButtonRef = useRef(null);
 
+    useEffect(() => {
+        setIsHead(snake[0]);
+    }, [isHead, snake]);
   useEffect(() => {
     const handleKeyDown = (e) => {
       switch (e.key) {
@@ -222,6 +226,18 @@ function App() {
                                         ? "food"
                                         : ""
                                 }`}
+                                style={
+                                    snake.some(
+                                        (segment) => segment.x === col && segment.y === row
+                                    )
+                                        ? {}
+                                        : food.x === col && food.y === row
+                                        ? {
+                                            backgroundImage: "url('https://emojicdn.elk.sh/🍎')", 
+                                            backgroundColor: 'unset'
+                                        }
+                                        : {}
+                                }
                             />
                         ))
                     )}

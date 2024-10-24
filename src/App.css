@@ -4,6 +4,7 @@
     --ternary-color: #54C392;
     --snake-no-img-color: #D2FF72;
     --food-no-img-color: #F95454;
+    --food-img: url('https://emojicdn.elk.sh/🍎');
 
     /* For gradient later
     #D2FF72
@@ -55,7 +56,13 @@
 }
 
 .food {
+    /* background-image: url('./assets/apple.png'); */
+    /* background-image: var(--food-img); */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     background-color: var(--food-no-img-color);
+
 }
 
 .game-over {
