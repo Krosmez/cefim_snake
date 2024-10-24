@@ -4,11 +4,11 @@ import Container from "../Container";
 
 export const Header = ({
   score,
-  gameOver,
   onMapChange,
   onSpeedChange,
   mapSize,
-  snakeSpeed,
+snakeSpeed,
+  isStarted,
 }) => {
   const handleMapSizeChange = (event) => {
     if (mapSize === event.target.value) return;
@@ -29,7 +29,7 @@ export const Header = ({
           <select
             id="mapSize"
             onChange={handleMapSizeChange}
-            disabled={!gameOver}
+            disabled={isStarted}
           >
             <option value={16}>Small</option>
             <option value={24}>Normal</option>
@@ -41,7 +41,7 @@ export const Header = ({
           <select
             id="snakeSpeed"
             onChange={handleSnakeSpeedChange}
-            disabled={!gameOver}
+            disabled={isStarted}
           >
             <option value={500}>Slow</option>
             <option value={250}>Normal</option>
