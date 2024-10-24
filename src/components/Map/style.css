@@ -13,10 +13,12 @@
     height: 20px;
     background-position: center;
     background-size: cover;
+    z-index: auto;
 }
 
 .snake {
     background-color: var(--primary-color);
+    z-index: 1;
 }
 
 .food {

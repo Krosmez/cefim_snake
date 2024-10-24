@@ -35,27 +35,60 @@ export const Map = ({
     }
   };
 
-  const isHeadSnake = (col, row) => {
-    if (isHead.x === col && isHead.y === row) {
-      return true;
-    } else {
-      return false;
-    }
-  };
 
-  const getClassName = (col, row) => {
+  const isHeadSnake = (col, row) => {
+    return isHead.x === col && isHead.y === row;
+};
+
+const getClassName = (col, row) => {
     let className = "";
     const headDirection = direction.toLowerCase();
 
     if (isHeadSnake(col, row)) {
-      className += `snake-head snake-head-${headDirection}`;
+        className += `snake-head snake-head-${headDirection}`;
     } else if (bodySnake(col, row)) {
-      className += "snake";
+        const segmentIndex = snake.findIndex(segment => segment.x === col && segment.y === row);
+        const prevSegment = snake[segmentIndex - 1];
+        const nextSegment = snake[segmentIndex + 1];
+
+        if (segmentIndex === snake.length - 1) {
+            // Tail segment
+            className += "snake-tail";
+            if (prevSegment) {
+                if (prevSegment.x < col) {
+                    className += " snake-tail-left";
+                } else if (prevSegment.x > col) {
+                    className += " snake-tail-right";
+                } else if (prevSegment.y < row) {
+                    className += " snake-tail-up";
+                } else if (prevSegment.y > row) {
+                    className += " snake-tail-down";
+                }
+            }
+        } else if (prevSegment && nextSegment) {
+            if (prevSegment.x === nextSegment.x) {
+                className += "snake-body-vertical";
+            } else if (prevSegment.y === nextSegment.y) {
+                className += "snake-body-horizontal";
+            } else {
+                if ((prevSegment.x < col && nextSegment.y < row) || (nextSegment.x < col && prevSegment.y < row)) {
+                    className += "snake-turn-top-left";
+                } else if ((prevSegment.x > col && nextSegment.y < row) || (nextSegment.x > col && prevSegment.y < row)) {
+                    className += "snake-turn-top-right";
+                } else if ((prevSegment.x < col && nextSegment.y > row) || (nextSegment.x < col && prevSegment.y > row)) {
+                    className += "snake-turn-bottom-left";
+                } else if ((prevSegment.x > col && nextSegment.y > row) || (nextSegment.x > col && prevSegment.y > row)) {
+                    className += "snake-turn-bottom-right";
+                }
+            }
+        } else {
+            className += "snake-body-horizontal"; // Default class if no previous or next segment
+        }
     } else if (isFoodEaten(col, row)) {
-      className += "food";
+        className += "food";
     }
     return className;
-    };
+};
     
     const cellSize={width: `${42-mapSize}px`, height: `${42-mapSize}px`};
 
