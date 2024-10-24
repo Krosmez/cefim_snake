@@ -1,14 +1,16 @@
 import React, { createContext, useContext, useReducer } from "react";
 
+const initialLocalStorage = () => {
+    const scoreBoard = localStorage.getItem("scoreBoard");
+    if (scoreBoard) {
+        return JSON.parse(scoreBoard);
+    } else {
+        localStorage.setItem("scoreBoard", JSON.stringify([{ name: "Player1", score: 0 }]));
+    }
+}
 const initialState = {
   modal: null,
-  scoreBoard: [
-    { name: "Satan", score: 666 },
-    { name: "Player 02", score: 2 },
-    { name: "Player 03", score: 3 },
-    { name: "Jonathan", score: 100 },
-    { name: "Player 05", score: 5 },
-  ],
+  scoreBoard: initialLocalStorage(),
 };
 
 const reducer = (state, action) => {

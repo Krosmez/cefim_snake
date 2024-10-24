@@ -5,7 +5,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Container from "./components/Container";
 import GameOver from "./components/GameOver";
 import Header from "./components/Header";
-import Modal from "./components/Modals/Modal";
 import { useGlobalContext } from "./context/GlobalContext";
 
 function App({}) {
@@ -33,8 +32,9 @@ function App({}) {
         case "ArrowLeft":
           setDirection("LEFT");
           break;
-        case "ArrowRight":
-          setDirection("RIGHT");
+          case "ArrowRight":
+              setDirection("RIGHT");
+              break;
         default:
           break;
       }
@@ -98,7 +98,7 @@ function App({}) {
 
     const interval = setInterval(moveSnake, snakeSpeed);
     return () => clearInterval(interval);
-  }, [snake, direction, food, gameOver]);
+  }, [snake, direction, food, gameOver, snakeSpeed, mapSize, score]);
 
   return (
     <>
