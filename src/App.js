@@ -143,14 +143,18 @@ function App() {
           <div
             className="game-board"
             style={{
-              gridTemplateColumns: `repeat(${mapSize}, 20px)`,
-              gridTemplateRows: `repeat(${mapSize}, 20px)`,
+              gridTemplateColumns: `repeat(${mapSize}, ${42-mapSize}px)`,
+              gridTemplateRows: `repeat(${mapSize}, ${42-mapSize}px)`,
             }}
           >
             {Array.from({ length: mapSize }).map((_, row) =>
               Array.from({ length: mapSize }).map((_, col) => (
                 <div
-                  key={`${row}-${col}`}
+                      key={ `${row}-${col}` }
+                      style={{
+                        width: `${42-mapSize}px`,
+                        height: `${42-mapSize}px`,
+                      }}
                   className={`cell ${
                     snake.some(
                       (segment) => segment.x === col && segment.y === row
