@@ -16,9 +16,6 @@ const GameOver = ({
     const { dispatch, state } = useGlobalContext();
     const [name, setName] = useState("");
 
-    /**
-     * Save new score in scoreBoard
-     */
     const handleSubmit = (e) => {
         e.preventDefault();
         const newScoreBoard = [...state.scoreBoard, { name, score }];
@@ -58,6 +55,7 @@ const GameOver = ({
                     setGameOver(false);
                     setDirection("RIGHT");
                     setSnake([{ x: mapSize / 2, y: mapSize / 2 }]);
+                    setScore(0);
                     setFood({
                         x: parseInt(Math.random() * mapSize),
                         y: parseInt(Math.random() * mapSize),

@@ -16,7 +16,9 @@ function App() {
   });
   const [direction, setDirection] = useState("RIGHT");
   const [gameOver, setGameOver] = useState(false);
-  const [score, setScore] = useState(0);
+    const [score, setScore] = useState(0);
+    const [pause, setPause] = useState(true);
+    const [isStarted, setIsStarted] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -31,8 +33,12 @@ function App() {
           if (direction !== "RIGHT") setDirection("LEFT");
           break;
           case "ArrowRight":
-              setDirection("RIGHT");
-              break;
+          if (direction !== "LEFT") setDirection("RIGHT");
+        break;
+          case " ":
+              setIsStarted(true);
+              setPause(!pause);
+            break; 
         default:
           break;
       }
@@ -41,12 +47,13 @@ function App() {
     return () => {
         document.removeEventListener("keydown", handleKeyDown);
     };
-    }, [direction]);
+    }, [direction, pause]);
 
     useEffect(() => {
         if (gameOver) return;
 
         const moveSnake = () => {
+            if (pause) return;
             const newSnake = [...snake];
             const head = { ...newSnake[0] };
 
@@ -87,6 +94,8 @@ function App() {
                     .slice(1)
                     .some((segment) => segment.x === head.x && segment.y === head.y)
             ) {
+                setPause(true);
+                setIsStarted(false);
                 setGameOver(true);
             } else {
                 setSnake(newSnake);
@@ -95,7 +104,7 @@ function App() {
 
         const interval = setInterval(moveSnake, snakeSpeed);
         return () => clearInterval(interval);
-    }, [snake, direction, food, gameOver, snakeSpeed, mapSize, score]);
+    }, [snake, direction, food, gameOver, snakeSpeed, mapSize, score, pause]);
 
   return (
     <>
@@ -117,9 +126,19 @@ function App() {
         mapSize={mapSize}
         snakeSpeed={snakeSpeed}
         onMapChange={(e) => setMapSize(e)}
-        onSpeedChange={(e) => setSnakeSpeed(e)}
+              onSpeedChange={ (e) => setSnakeSpeed(e) }
+              pause={ pause }
+              isStarted={isStarted}
       />
-      <Container>
+          <Container>
+          <div className="game-board-container">
+          {pause && (
+                    <div className="pause-overlay">
+                          <span className="pause-icon">
+                              {isStarted ? "⏸️" : "▶️" }
+                        </span>
+                    </div>
+                )}
         <div
           className="game-board"
           style={{
@@ -143,6 +162,7 @@ function App() {
               />
             ))
           )}
+        </div>
         </div>
       </Container>
     </>
