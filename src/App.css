@@ -3,6 +3,7 @@
     --secondary-color: #73EC8B;
     --ternary-color: #54C392;
     --snake-no-img-color: #D2FF72;
+    --snake-img-head: url('./assets/snake-head.png');
     --food-no-img-color: #F95454;
     --food-img: url('https://emojicdn.elk.sh/🍎');
 
@@ -55,6 +56,12 @@
     background-color: var(--primary-color);
 }
 
+.snake-head {
+    background-image: var(--snake-img-head);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
 .food {
     /* background-image: url('./assets/apple.png'); */
     /* background-image: var(--food-img); */

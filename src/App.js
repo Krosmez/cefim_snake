@@ -1,40 +1,18 @@
 import "./App.css";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import Container from "./components/Container";
 import GameOver from "./components/GameOver";
 import Header from "./components/Header";
+import { useGlobalContext } from "./context/GlobalContext";
 
 function App() {
-<<<<<<< HEAD
-    const { state, dispatch } = useGlobalContext();
-    const [mapSize, setMapSize] = useState(16);
-    const [snakeSpeed, setSnakeSpeed] = useState(500);
-    const [snake, setSnake] = useState([{ x: mapSize / 2, y: mapSize / 2 }]);
-    const [isHead, setIsHead] = useState(snake[0]);
-    const [food, setFood] = useState({
-        x: parseInt(Math.random() * mapSize),
-        y: parseInt(Math.random() * mapSize),
-    });
-    const [direction, setDirection] = useState("RIGHT");
-    const [gameOver, setGameOver] = useState(false);
-    const [scoreBoard, setScoreBoard] = useState(
-        state.scoreBoard ?? [
-          { name: "Player 1", score: 10 },
-          { name: "Player 2", score: 20 },
-          { name: "Player 3", score: 30 },
-          { name: "Player 4", score: 40 },
-          { name: "Player 5", score: 50 },
-      ]
-    );
-    const [score, setScore] = useState(0);
-    const [name, setName] = useState("");
-    const restartButtonRef = useRef(null);
-=======
+const { state, dispatch } = useGlobalContext();
   const [mapSize, setMapSize] = useState(16);
   const [snakeSpeed, setSnakeSpeed] = useState(100);
   const [snake, setSnake] = useState([{ x: mapSize / 2, y: mapSize / 2 }]);
+  const [isHead, setIsHead] = useState(snake[0]);
   const [food, setFood] = useState({
     x: parseInt(Math.random() * mapSize),
     y: parseInt(Math.random() * mapSize),
@@ -44,11 +22,12 @@ function App() {
   const [score, setScore] = useState(0);
   const [pause, setPause] = useState(true);
   const [isStarted, setIsStarted] = useState(false);
->>>>>>> 617a09fe959bacb46f748e4d514bc05facb05d20
+  const restartButtonRef = useRef(null);
 
-    useEffect(() => {
-        setIsHead(snake[0]);
-    }, [isHead, snake]);
+  useEffect(() => {
+    setIsHead(snake[0]);
+}, [isHead, snake]);
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       switch (e.key) {
@@ -135,6 +114,43 @@ function App() {
     return () => clearInterval(interval);
   }, [snake, direction, food, gameOver, snakeSpeed, mapSize, score, pause]);
 
+  const bodySnake = (col, row)=>{
+    if(snake.some((segment) => segment.x === col && segment.y === row)) {
+        return true
+    }
+    else {
+        return false
+    }
+  }
+
+  const isFoodEaten = (col, row)=>{
+    if (food.x === col && food.y === row) {
+        return true        
+    }else {
+        return false
+    }
+  }
+
+  const isHeadSnake = (col, row)=>{
+    if (isHead.x === col && isHead.y === row) {
+        return true        
+    }else {
+        return false
+    }
+  }
+
+  function className(col, row) {
+    let className = "";
+    if (isHeadSnake(col, row)) {
+        className += "snake-head";
+    } else if (bodySnake(col, row)) {
+        className += "snake";
+    } else if (isFoodEaten(col, row)) {
+        className += "food";
+    }
+    return className;
+}
+
   return (
     <>
       {gameOver && (
@@ -178,64 +194,8 @@ function App() {
             {Array.from({ length: mapSize }).map((_, row) =>
               Array.from({ length: mapSize }).map((_, col) => (
                 <div
-<<<<<<< HEAD
-                    className="game-board"
-                    style={{
-                        gridTemplateColumns: `repeat(${mapSize}, 20px)`,
-                        gridTemplateRows: `repeat(${mapSize}, 20px)`,
-                    }}
-                >
-                    {Array.from({ length: mapSize }).map((_, row) =>
-                        Array.from({ length: mapSize }).map((_, col) => (
-                            <div
-                                key={`${row}-${col}`}
-                                className={`cell ${
-                                    snake.some(
-                                        (segment) => segment.x === col && segment.y === row
-                                    )
-                                        ? "snake"
-                                        : food.x === col && food.y === row
-                                        ? "food"
-                                        : ""
-                                }`}
-                                style={
-                                    snake.some(
-                                        (segment) => segment.x === col && segment.y === row
-                                    )
-                                        ? {}
-                                        : food.x === col && food.y === row
-                                        ? {
-                                            backgroundImage: "url('https://emojicdn.elk.sh/🍎')", 
-                                            backgroundColor: 'unset'
-                                        }
-                                        : {}
-                                }
-                            />
-                        ))
-                    )}
-                    <div className="score-board">
-                        <h2>Score Board</h2>
-                        {scoreBoard?.map((player, index) => (
-                            <li key={index}>
-                                {player.name}: {player.score}
-                            </li>
-                        ))}
-                    </div>
-                </div>
-            </Container>
-        </>
-    );
-=======
                   key={`${row}-${col}`}
-                  className={`cell ${
-                    snake.some(
-                      (segment) => segment.x === col && segment.y === row
-                    )
-                      ? "snake"
-                      : food.x === col && food.y === row
-                      ? "food"
-                      : ""
-                  }`}
+                  className={`cell ${className(col, row)}`}
                 />
               ))
             )}
@@ -244,7 +204,6 @@ function App() {
       </Container>
     </>
   );
->>>>>>> 617a09fe959bacb46f748e4d514bc05facb05d20
 }
 
 export default App;
