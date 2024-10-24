@@ -1,6 +1,6 @@
 import "./App.css";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Container from "./components/Container";
 import GameOver from "./components/GameOver";
@@ -14,7 +14,6 @@ function App() {
   const [mapSize, setMapSize] = useState(16);
   const [snakeSpeed, setSnakeSpeed] = useState(100);
   const [snake, setSnake] = useState([{ x: mapSize / 2, y: mapSize / 2 }]);
-
   const [food, setFood] = useState({
     x: parseInt(Math.random() * mapSize),
     y: parseInt(Math.random() * mapSize),
@@ -23,22 +22,49 @@ function App() {
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [pause, setPause] = useState(true);
-  const [isStarted, setIsStarted] = useState(false);
+    const [isStarted, setIsStarted] = useState(false);
+    const [subjectiveControls, setSubjectiveControls] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
       switch (e.key) {
         case "ArrowUp":
-          if (direction !== "DOWN") setDirection("UP");
+          if (direction !== "DOWN" && !subjectiveControls) setDirection("UP");
           break;
         case "ArrowDown":
-          if (direction !== "UP") setDirection("DOWN");
+          if (direction !== "UP" && !subjectiveControls) setDirection("DOWN");
           break;
-        case "ArrowLeft":
-          if (direction !== "RIGHT") setDirection("LEFT");
-          break;
+          case "ArrowLeft":
+              if (subjectiveControls) switch (direction) {
+                  case "UP":
+                      setDirection("LEFT");
+                      break;
+                  case "RIGHT":
+                      setDirection("UP");
+                      break;
+                  case "DOWN":
+                      setDirection("RIGHT");
+                      break;
+                  default:
+                      setDirection("DOWN");
+                      break;
+              } else if (direction !== "RIGHT") setDirection("LEFT");
+        break;
         case "ArrowRight":
-          if (direction !== "LEFT") setDirection("RIGHT");
+            if (subjectiveControls) switch (direction) {
+                case "UP":
+                setDirection("RIGHT");
+                break;
+                case "RIGHT":
+                setDirection("DOWN");
+                break;
+                case "DOWN":
+                setDirection("LEFT");
+                break;
+                default:
+                setDirection("UP");
+                break;
+            } else if (direction !== "LEFT") setDirection("RIGHT");
           break;
         case " ":
           setIsStarted(true);
@@ -129,7 +155,7 @@ function App() {
         ),
       });
     }
-  }, [gameOver, mapSize]);
+  }, [dispatch, gameOver, mapSize, score]);
 
   return (
     <>
@@ -140,7 +166,8 @@ function App() {
         onMapChange={(e) => setMapSize(e)}
         onSpeedChange={(e) => setSnakeSpeed(e)}
         pause={pause}
-        isStarted={isStarted}
+        isStarted={ isStarted }
+        onSubjectiveControlsChange={ () => setSubjectiveControls(!subjectiveControls) }
       />
       <Container>
         <div className="active-score">
@@ -148,7 +175,10 @@ function App() {
         </div>
         <Map
           pause={pause}
-          onClickPause={() => setPause(!pause)}
+          onClickPause={ () => {
+            setPause(!pause);
+            setIsStarted(true);
+          } }
           isStarted={isStarted}
           mapSize={mapSize}
           snake={snake}

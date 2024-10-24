@@ -5,49 +5,54 @@ import Container from "../Container";
 export const Header = ({
   onMapChange,
   onSpeedChange,
-  mapSize,
-  snakeSpeed,
-  isStarted,
+    isStarted,
+    onSubjectiveControlsChange
 }) => {
   const handleMapSizeChange = (event) => {
-    if (mapSize === event.target.value) return;
     onMapChange(event.target.value);
   };
 
   const handleSnakeSpeedChange = (event) => {
-    if (snakeSpeed === event.target.value) return;
     onSpeedChange(event.target.value);
-  };
+    };
+    
+    const handleSubjectiveControlsChange = () => {
+        onSubjectiveControlsChange();
+    }
 
   return (
     <header className="header">
       <Container>
         <h1>Simple Snake Game</h1>
         <div className="optionContainer">
-          <label htmlFor="mapSize">Map Size: </label>
-          <select
+            <div className="optionItem">
+            <label htmlFor="subjectiveControls">Subjective Controls </label>
+            <input type="checkbox" id="subjectiveControls" onChange={ handleSubjectiveControlsChange } disabled={ isStarted } />
+        </div>
+        <div className="optionItem">
+          <label htmlFor="mapSize">Size </label>
+        <input
+            type="range"
             id="mapSize"
+            min="16"
+            max="32"
             onChange={handleMapSizeChange}
-                      disabled={ isStarted }
-          >
-            <option value={16}>Small</option>
-            <option value={24}>Normal</option>
-            <option value={32}>Huge</option>
-          </select>
+            disabled={ isStarted }
+          />
         </div>
-        <div className="optionContainer">
-          <label htmlFor="mapSize">Snake Speed: </label>
-          <select
+        <div className="optionItem">
+          <label htmlFor="snakeSpeed">Speed </label>
+          <input
+            type="range"
             id="snakeSpeed"
+            min="900"
+            max="100"
             onChange={handleSnakeSpeedChange}
-            disabled={isStarted}
-          >
-            <option value={500}>Slow</option>
-            <option value={250}>Normal</option>
-            <option value={100}>Fast</option>
-          </select>
+            disabled={ isStarted }
+          />
         </div>
-      </Container>
+    </div>
+    </Container>
     </header>
   );
 };
