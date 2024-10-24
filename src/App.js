@@ -6,7 +6,7 @@ import Container from "./components/Container";
 import Header from "./components/Header";
 import { useGlobalContext } from "./context/GlobalContext";
 
-function App({}) {
+function App() {
     const { state, dispatch } = useGlobalContext();
     const [mapSize, setMapSize] = useState(16);
     const [snakeSpeed, setSnakeSpeed] = useState(500);
@@ -34,16 +34,16 @@ function App({}) {
         const handleKeyDown = (e) => {
             switch (e.key) {
                 case "ArrowUp":
-                    setDirection("UP");
+                    if (direction !== "DOWN") setDirection("UP");
                     break;
                 case "ArrowDown":
-                    setDirection("DOWN");
+                    if (direction !== "UP") setDirection("DOWN");
                     break;
                 case "ArrowLeft":
-                    setDirection("LEFT");
+                    if (direction !== "RIGHT") setDirection("LEFT");
                     break;
                 case "ArrowRight":
-                    setDirection("RIGHT");
+                    if (direction !== "LEFT") setDirection("RIGHT");
                     break;
                 default:
                     break;
@@ -54,7 +54,7 @@ function App({}) {
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
         };
-    }, []);
+    }, [direction]);
 
     useEffect(() => {
         if (gameOver) return;
