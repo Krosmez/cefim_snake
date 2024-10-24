@@ -29,7 +29,7 @@ snakeSpeed,
           <select
             id="mapSize"
             onChange={handleMapSizeChange}
-            disabled={isStarted}
+                      disabled={ isStarted }
           >
             <option value={16}>Small</option>
             <option value={24}>Normal</option>

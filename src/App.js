@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import Container from "./components/Container";
 import GameOver from "./components/GameOver";
 import Header from "./components/Header";
+import ScoreBoard from "./components/ScoreBoard";
 
 function App() {
   const [mapSize, setMapSize] = useState(16);
@@ -130,7 +131,7 @@ function App() {
               pause={ pause }
               isStarted={isStarted}
       />
-          <Container>
+        <Container>
           <div className="game-board-container">
           {pause && (
                     <div className="pause-overlay">
@@ -163,7 +164,8 @@ function App() {
             ))
           )}
         </div>
-        </div>
+              </div>
+              <ScoreBoard/>
       </Container>
     </>
   );
