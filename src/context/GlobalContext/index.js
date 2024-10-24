@@ -1,7 +1,8 @@
-import React, { createContext, useReducer, useContext } from "react";
+import React, { createContext, useContext, useReducer } from "react";
 
 const initialState = {
-  scoreBoard:[
+  modal: null,
+  scoreBoard: [
     { name: "Satan", score: 666 },
     { name: "Player 02", score: 2 },
     { name: "Player 03", score: 3 },
@@ -16,6 +17,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         scoreBoard: action.payload,
+      };
+    case "HANDLE_MODAL":
+      return {
+        ...state,
+        modal: action.payload,
       };
     default:
       return state;

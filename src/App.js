@@ -3,7 +3,9 @@ import "./App.css";
 import React, { useEffect, useRef, useState } from "react";
 
 import Container from "./components/Container";
+import GameOver from "./components/GameOver";
 import Header from "./components/Header";
+import Modal from "./components/Modals/Modal";
 import { useGlobalContext } from "./context/GlobalContext";
 
 function App({}) {
@@ -18,8 +20,6 @@ function App({}) {
   const [direction, setDirection] = useState("RIGHT");
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
-  const [name, setName] = useState("");
-  const restartButtonRef = useRef(null);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -35,7 +35,6 @@ function App({}) {
           break;
         case "ArrowRight":
           setDirection("RIGHT");
-          break;
         default:
           break;
       }
@@ -101,83 +100,19 @@ function App({}) {
     return () => clearInterval(interval);
   }, [snake, direction, food, gameOver]);
 
-  useEffect(() => {
-    console.log("state", state.scoreBoard);
-  }, [state.scoreBoard]);
-
-  /**
-   * Save new score in scoreBoard
-   */
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newScoreBoard = [...state.scoreBoard, { name, score }];
-
-    newScoreBoard.sort((a, b) => b.score - a.score);
-    newScoreBoard.pop();
-    dispatch({ type: "UPDATE_SCOREBOARD", payload: newScoreBoard });
-    setScore(0);
-  };
-
-  useEffect(() => {
-    if (gameOver && restartButtonRef.current) {
-      restartButtonRef.current.focus();
-    }
-  }, [gameOver]);
-  const handleMapSizeChange = (event) => {
-    if (mapSize === event.target.value) return;
-    setMapSize(event.target.value);
-    setSnake([
-      {
-        x: parseInt(event.target.value) / 2,
-        y: parseInt(event.target.value) / 2,
-      },
-    ]);
-    setFood({
-      x: parseInt(Math.random() * event.target.value),
-      y: parseInt(Math.random() * event.target.value),
-    });
-  };
-
-  const handleSnakeSpeedChange = (event) => {
-    if (snakeSpeed === event.target.value) return;
-    setSnakeSpeed(event.target.value);
-  };
-
-  /** Modifier la valeur du champs text */
-  function handleChange(e) {
-    setName(e.target.value);
-  }
-
   return (
     <>
       {gameOver && (
-        <>
-          <p className="game-over">Game Over</p>
-          <button
-            className="restart"
-            onClick={() => {
-              setGameOver(false);
-              setDirection("RIGHT");
-              setSnake([{ x: mapSize / 2, y: mapSize / 2 }]);
-              setFood({
-                x: parseInt(Math.random() * mapSize),
-                y: parseInt(Math.random() * mapSize),
-              });
-            }}
-            ref={restartButtonRef}
-          >
-            Restart
-          </button>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              value={name}
-              label="input your name: "
-              name="name"
-              onChange={handleChange}
-            />
-          </form>
-        </>
+        <GameOver
+          gameOver={gameOver}
+          setGameOver={setGameOver}
+          setScore={setScore}
+          setDirection={setDirection}
+          setSnake={setSnake}
+          setFood={setFood}
+          mapSize={mapSize}
+          score={score}
+        />
       )}
       <Header
         score={score}
