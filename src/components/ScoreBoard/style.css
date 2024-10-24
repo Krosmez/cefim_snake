@@ -1,12 +1,12 @@
 .leaderboard {
-    max-height: 45rem;
+    max-height: 400px;
     min-width: 25rem;
     text-align: center;
     border-radius: 1rem;
     padding: 1rem;
     background-color: var(--ternary-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .leaderboard .container:before,

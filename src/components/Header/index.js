@@ -34,7 +34,7 @@ export const Header = ({
 
   return (
     <header className="header">
-      <Container>
+          <Container>
         <h1>Simple Snake Game</h1>
         <div className="optionContainer">
           <div className="optionItem">

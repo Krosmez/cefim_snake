@@ -90,17 +90,9 @@ const getClassName = (col, row) => {
     return className;
   };
 
-  const cellSize = { width: `${42 - mapSize}px`, height: `${42 - mapSize}px` };
-
   return (
     <>
-      <div
-        className="game-board"
-        style={{
-          gridTemplateColumns: `repeat(${mapSize}, ${42 - mapSize}px)`,
-          gridTemplateRows: `repeat(${mapSize}, ${42 - mapSize}px)`,
-        }}
-      >
+    <div className="game-board-container">
         {pause && (
           <div className="pause-overlay">
             <span className="pause-icon" onClick={onClickPause}>
@@ -108,6 +100,12 @@ const getClassName = (col, row) => {
             </span>
           </div>
         )}
+      <div
+        className="game-board"
+        style={{
+            '--map-size': mapSize,
+        }}
+      >
         {Array.from({ length: mapSize }).map((_, row) =>
           Array.from({ length: mapSize }).map((_, col) => (
             <div
@@ -115,13 +113,14 @@ const getClassName = (col, row) => {
               className={`cell ${getClassName(col, row)}`}
               style={
                 snake.some((segment) => segment.x === col && segment.y === row)
-                  ? { ...cellSize }
-                  : { backgroundImage: `url(${grass})`, ...cellSize }
+                  ? { '--map-size': mapSize }
+                  : { backgroundImage: `url(${grass})`, '--map-size': mapSize }
               }
             />
           ))
         )}
-      </div>
+    </div>
+    </div>
     </>
   );
 };
