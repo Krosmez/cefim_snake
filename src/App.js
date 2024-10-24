@@ -18,37 +18,38 @@ function App() {
     const [direction, setDirection] = useState("RIGHT");
     const [gameOver, setGameOver] = useState(false);
     const [scoreBoard, setScoreBoard] = useState(
-        JSON.parse(localStorage.getItem("scoreBoard")) ?? [
-            { name: "Player 1", score: 10 },
-            { name: "Player 2", score: 20 },
-            { name: "Player 3", score: 30 },
-            { name: "Player 4", score: 40 },
-            { name: "Player 5", score: 50 },
-        ]
+        state.scoreBoard ?? [
+          { name: "Player 1", score: 10 },
+          { name: "Player 2", score: 20 },
+          { name: "Player 3", score: 30 },
+          { name: "Player 4", score: 40 },
+          { name: "Player 5", score: 50 },
+      ]
     );
     const [score, setScore] = useState(0);
     const [name, setName] = useState("");
     const restartButtonRef = useRef(null);
 
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            switch (e.key) {
-                case "ArrowUp":
-                    if (direction !== "DOWN") setDirection("UP");
-                    break;
-                case "ArrowDown":
-                    if (direction !== "UP") setDirection("DOWN");
-                    break;
-                case "ArrowLeft":
-                    if (direction !== "RIGHT") setDirection("LEFT");
-                    break;
-                case "ArrowRight":
-                    if (direction !== "LEFT") setDirection("RIGHT");
-                    break;
-                default:
-                    break;
-            }
-        };
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      switch (e.key) {
+        case "ArrowUp":
+          if (direction !== "DOWN") setDirection("UP");
+          break;
+        case "ArrowDown":
+          if (direction !== "UP") setDirection("DOWN");
+          break;
+        case "ArrowLeft":
+          if (direction !== "RIGHT") setDirection("LEFT");
+          break;
+        case "ArrowRight":
+          if (direction !== "LEFT") setDirection("RIGHT");
+          break;
+        default:
+          break;
+      }
+    };
+
 
         document.addEventListener("keydown", handleKeyDown);
         return () => {
@@ -111,19 +112,10 @@ function App() {
     }, [snake, direction, food, gameOver]);
 
     useEffect(() => {
-        console.log("state", state.scoreBoard);
-    }, [state.scoreBoard]);
-
-    useEffect(() => {
         if (gameOver && restartButtonRef.current) {
             restartButtonRef.current.focus();
         }
     }, [gameOver]);
-
-    useEffect(() => {
-        localStorage.setItem("scoreBoard", JSON.stringify(scoreBoard));
-        console.log(scoreBoard);
-    }, [scoreBoard]);
 
     const handleMapSizeChange = (event) => {
         if (mapSize === event.target.value) return;
