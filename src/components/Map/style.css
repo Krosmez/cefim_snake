@@ -15,10 +15,6 @@
     background-color: var(--primary-color);
 }
 
-.food {
-    background-color: var(--food-no-img-color);
-}
-
 .game-over {
     grid-column: span 20;
     text-align: center;

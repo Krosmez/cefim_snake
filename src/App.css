@@ -6,7 +6,6 @@
     --snake-img-head: url('./assets/snake-head.png');
     --food-no-img-color: #F95454;
     --secondary-light: #73ec8b8d;
-    --food-img: url('https://emojicdn.elk.sh/🍎');
 
     /* For gradient later
     #D2FF72
@@ -55,11 +54,15 @@
 }
 
 .food {
-    /* background-image: url('./assets/apple.png'); */
-    background-image: var(--food-img);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    /* background-color: var(--food-no-img-color); */
+    position: relative;
+}
 
+.food:before {
+    content: '🍎';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
 }

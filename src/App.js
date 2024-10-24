@@ -1,6 +1,6 @@
 import "./App.css";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Container from "./components/Container";
 import GameOver from "./components/GameOver";
