@@ -152,7 +152,7 @@ function App() {
           mapSize={mapSize}
           snake={snake}
           food={food}
-        /
+        />
         <ScoreBoard/>
       </Container>
     </>
