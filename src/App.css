@@ -1,9 +1,10 @@
 :root {
     --primary-color: #D2FF72;
     --secondary-color: #73EC8B;
-    --ternary-color: #54C392;
+    --ternary-color: #378e68;
     --snake-no-img-color: #D2FF72;
     --food-no-img-color: #F95454;
+    --secondary-light: #73ec8b8d;
 
     /* For gradient later
     #D2FF72
@@ -13,91 +14,12 @@
     */
 }
 
-.top-level {
-    max-width: 100%;
-    margin-right: 10%;
-    margin-left: 10%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.end.game-board {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.end .restart {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.game-board {
-    display: grid;
-    gap: 1px;
-}
-
-.cell {
-    background-color: #eee;
-}
-
-.snake {
-    background-color: var(--primary-color);
-}
-
-.food {
-    background-color: var(--food-no-img-color);
-}
-
-.game-over {
-    grid-column: span 20;
-    text-align: center;
-    font-size: 24px;
-    color: #F95454;
-}
-
-.score-board {
-    position: absolute;
-    right: 10rem;
-}
-
-.game-board-container {
-    position: relative;
-    width: fit-content;
-}
-
-.pause-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-}
-
-.pause-icon {
-    font-size: 48px;
-    color: white;
-}
-
-.game-board {
-    position: relative;
-    z-index: 0;
-}
-
-.grid-cell {
-    width: 20px;
-    height: 20px;
-    border: 1px solid #ccc;
+.active-score {
+    padding: 5px;
+    margin-bottom: 1rem;
+    max-width: 100px;
+    border-radius: 4px;
+    border: 1px solid var(--ternary-color);
+    background-color: var(--secondary-light);
+    color: var(--ternary-color);
 }

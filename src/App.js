@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 import Container from "./components/Container";
 import GameOver from "./components/GameOver";
 import Header from "./components/Header";
+import Map from "./components/Map";
+import { useGlobalContext } from "./context/GlobalContext";
 import ScoreBoard from "./components/ScoreBoard";
 
 function App() {
@@ -20,6 +22,7 @@ function App() {
   const [score, setScore] = useState(0);
   const [pause, setPause] = useState(true);
   const [isStarted, setIsStarted] = useState(false);
+  const { dispatch } = useGlobalContext();
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -107,22 +110,29 @@ function App() {
     return () => clearInterval(interval);
   }, [snake, direction, food, gameOver, snakeSpeed, mapSize, score, pause]);
 
+  useEffect(() => {
+    if (gameOver) {
+      dispatch({
+        type: "HANDLE_MODAL",
+        payload: (
+          <GameOver
+            gameOver={gameOver}
+            setGameOver={setGameOver}
+            setScore={setScore}
+            setDirection={setDirection}
+            setSnake={setSnake}
+            setFood={setFood}
+            mapSize={mapSize}
+            score={score}
+          />
+        ),
+      });
+    }
+  }, [gameOver, mapSize]);
+
   return (
     <>
-      {gameOver && (
-        <GameOver
-          gameOver={gameOver}
-          setGameOver={setGameOver}
-          setScore={setScore}
-          setDirection={setDirection}
-          setSnake={setSnake}
-          setFood={setFood}
-          mapSize={mapSize}
-          score={score}
-        />
-      )}
       <Header
-        score={score}
         gameOver={gameOver}
         mapSize={mapSize}
         snakeSpeed={snakeSpeed}
@@ -131,45 +141,19 @@ function App() {
         pause={pause}
         isStarted={isStarted}
       />
-        <Container>
-          <div className="game-board-container">
-          {pause && (
-            <div className="pause-overlay">
-              <span className="pause-icon" onClick={() => setPause(!pause)}>
-                {isStarted ? "⏸️" : "▶️"}
-              </span>
-            </div>
-          )}
-          <div
-            className="game-board"
-            style={{
-              gridTemplateColumns: `repeat(${mapSize}, ${42-mapSize}px)`,
-              gridTemplateRows: `repeat(${mapSize}, ${42-mapSize}px)`,
-            }}
-          >
-            {Array.from({ length: mapSize }).map((_, row) =>
-              Array.from({ length: mapSize }).map((_, col) => (
-                <div
-                      key={ `${row}-${col}` }
-                      style={{
-                        width: `${42-mapSize}px`,
-                        height: `${42-mapSize}px`,
-                      }}
-                  className={`cell ${
-                    snake.some(
-                      (segment) => segment.x === col && segment.y === row
-                    )
-                      ? "snake"
-                      : food.x === col && food.y === row
-                      ? "food"
-                      : ""
-                  }`}
-                />
-              ))
-            )}
-            </div>
-          </div>
-          <ScoreBoard/>
+      <Container>
+        <div className="active-score">
+          <span>Score: {score}</span>
+        </div>
+        <Map
+          pause={pause}
+          onClickPause={() => setPause(!pause)}
+          isStarted={isStarted}
+          mapSize={mapSize}
+          snake={snake}
+          food={food}
+        /
+        <ScoreBoard/>
       </Container>
     </>
   );
