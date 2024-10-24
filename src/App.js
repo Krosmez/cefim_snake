@@ -146,16 +146,18 @@ function App() {
         <div className="active-score">
           <span>Score: {score}</span>
         </div>
-        <Map
-          pause={pause}
-          onClickPause={() => setPause(!pause)}
-          isStarted={isStarted}
-          mapSize={mapSize}
-          snake={snake}
-          food={food}
-          direction={direction}
-        />
-        <ScoreBoard />
+        <div className="main-screen">
+          <ScoreBoard />
+          <Map
+            pause={pause}
+            onClickPause={() => setPause(!pause)}
+            isStarted={isStarted}
+            mapSize={mapSize}
+            snake={snake}
+            food={food}
+            direction={direction}
+          />
+        </div>
       </Container>
     </>
   );

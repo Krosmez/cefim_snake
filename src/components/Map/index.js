@@ -58,14 +58,7 @@ export const Map = ({
   };
 
   return (
-    <div className="game-board-container">
-      {pause && (
-        <div className="pause-overlay">
-          <span className="pause-icon" onClick={onClickPause}>
-            {isStarted ? "⏸️" : "▶️"}
-          </span>
-        </div>
-      )}
+    <>
       <div
         className="game-board"
         style={{
@@ -73,6 +66,13 @@ export const Map = ({
           gridTemplateRows: `repeat(${mapSize}, 20px)`,
         }}
       >
+        {pause && (
+          <div className="pause-overlay">
+            <span className="pause-icon" onClick={onClickPause}>
+              {isStarted ? "⏸️" : "▶️"}
+            </span>
+          </div>
+        )}
         {Array.from({ length: mapSize }).map((_, row) =>
           Array.from({ length: mapSize }).map((_, col) => (
             <div
@@ -90,7 +90,7 @@ export const Map = ({
           ))
         )}
       </div>
-    </div>
+    </>
   );
 };
 export default Map;

@@ -1,9 +1,5 @@
-.game-board-container {
-    position: relative;
-    width: fit-content;
-}
-
 .game-board {
+    position: relative;
     display: grid;
     gap: 1px;
 }
