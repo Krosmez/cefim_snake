@@ -55,15 +55,17 @@ export const Map = ({
       className += "food";
     }
     return className;
-  };
+    };
+    
+    const cellSize={width: `${42-mapSize}px`, height: `${42-mapSize}px`};
 
   return (
     <>
       <div
         className="game-board"
         style={{
-          gridTemplateColumns: `repeat(${mapSize}, 20px)`,
-          gridTemplateRows: `repeat(${mapSize}, 20px)`,
+          gridTemplateColumns: `repeat(${mapSize}, ${42-mapSize}px)`,
+          gridTemplateRows: `repeat(${mapSize}, ${42-mapSize}px)`,
         }}
       >
         {pause && (
@@ -83,8 +85,8 @@ export const Map = ({
                   (segment) => segment.x === col && segment.y === row
                 ) ||
                 (food.x === col && food.y === row)
-                  ? {}
-                  : { backgroundImage: `url(${grass})` }
+                  ? {...cellSize}
+                  : { backgroundImage: `url(${grass})`, ...cellSize }
               }
             />
           ))
