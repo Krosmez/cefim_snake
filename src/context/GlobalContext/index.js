@@ -1,16 +1,29 @@
 import React, { createContext, useContext, useReducer } from "react";
 
-const initialLocalStorage = () => {
-    const scoreBoard = localStorage.getItem("scoreBoard");
-    if (scoreBoard) {
-        return JSON.parse(scoreBoard);
-    } else {
-        localStorage.setItem("scoreBoard", JSON.stringify([{ name: "Player1", score: 0 }]));
-    }
-}
+const initLocalScoreBoard = () => {
+  const scoreBoard = localStorage.getItem("scoreBoard");
+  if (scoreBoard) {
+    return JSON.parse(scoreBoard);
+  } else {
+    localStorage.setItem(
+      "scoreBoard",
+      JSON.stringify([{ name: "Player1", score: 0 }])
+    );
+  }
+};
+const initLocalParams = () => {
+  const snakeParams = localStorage.getItem("snakeParams");
+  if (snakeParams) {
+    return JSON.parse(snakeParams);
+  } else {
+    localStorage.setItem("snakeParams", JSON.stringify([]));
+  }
+};
+
 const initialState = {
   modal: null,
-  scoreBoard: initialLocalStorage(),
+  scoreBoard: initLocalScoreBoard(),
+  params: initLocalParams(),
 };
 
 const reducer = (state, action) => {
@@ -24,6 +37,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         modal: action.payload,
+      };
+    case "HANDLE_PARAMS":
+      return {
+        ...state,
+        params: action.payload,
       };
     default:
       return state;

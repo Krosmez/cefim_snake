@@ -1,6 +1,7 @@
 import "./style.css";
 
 import Container from "../Container";
+import { useGlobalContext } from "../../context/GlobalContext";
 
 export const Header = ({
   onMapChange,
@@ -8,12 +9,23 @@ export const Header = ({
   isStarted,
   onSubjectiveControlsChange,
 }) => {
+  const { state, dispatch } = useGlobalContext();
   const handleMapSizeChange = (event) => {
     onMapChange(event.target.value);
+    dispatch({
+      type: "HANDLE_PARAMS",
+      payload: { ...state.params, mapSize: event.target.value },
+    });
+    localStorage.setItem("snakeParams", JSON.stringify(state.params));
   };
 
   const handleSnakeSpeedChange = (event) => {
     onSpeedChange(event.target.value);
+    dispatch({
+      type: "HANDLE_PARAMS",
+      payload: { ...state.params, snakeSpeed: event.target.value },
+    });
+    localStorage.setItem("snakeParams", JSON.stringify(state.params));
   };
 
   const handleSubjectiveControlsChange = () => {
@@ -41,6 +53,7 @@ export const Header = ({
               id="mapSize"
               min="16"
               max="32"
+              value={state.params?.mapSize || 16}
               onChange={handleMapSizeChange}
               disabled={isStarted}
             />
@@ -52,6 +65,7 @@ export const Header = ({
               id="snakeSpeed"
               min="100"
               max="900"
+              value={state.params?.snakeSpeed || 500}
               onChange={handleSnakeSpeedChange}
               disabled={isStarted}
             />

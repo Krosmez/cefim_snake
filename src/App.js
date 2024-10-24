@@ -183,7 +183,10 @@ function App() {
           <ScoreBoard />
           <Map
             pause={pause}
-            onClickPause={() => setPause(!pause)}
+            onClickPause={() => {
+              setPause(!pause);
+              setIsStarted(!isStarted);
+            }}
             isStarted={isStarted}
             mapSize={mapSize}
             snake={snake}
