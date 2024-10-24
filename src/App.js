@@ -137,7 +137,7 @@ function App() {
       }
     };
 
-    const interval = setInterval(moveSnake, snakeSpeed);
+    const interval = setInterval(moveSnake, 1000 - snakeSpeed);
     return () => clearInterval(interval);
   }, [snake, direction, food, gameOver, snakeSpeed, mapSize, score, pause]);
 
